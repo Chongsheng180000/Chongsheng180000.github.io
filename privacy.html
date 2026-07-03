@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>隐私说明 | 重生日记</title>
+  <meta name="description" content="重生日记的隐私说明。本站为纯静态页面，不主动收集个人信息。">
+  <meta name="theme-color" content="#10110f">
+  <link rel="canonical" href="https://chongsheng180000.github.io/privacy.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('cs-theme');
+      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="privacy">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div data-site-header></div>
+
+  <main id="main" class="page-main">
+    <section class="page-hero shell compact">
+      <p class="eyebrow">Privacy</p>
+      <h1>隐私说明</h1>
+      <p>这是一个纯静态站点。能少收集就不收集，能不接第三方脚本就不接。</p>
+    </section>
+    <section class="shell prose-page narrow">
+      <h2>本地设置</h2>
+      <p>明暗主题会写入浏览器 localStorage，用来记住你的显示偏好。搜索关键词只在当前页面里匹配，不发送到服务器。</p>
+      <h2>联系信息</h2>
+      <p>如果你通过邮箱、GitHub Issues 或其他联系方式主动发来信息，我只会按沟通目的使用它。</p>
+      <h2>外部链接</h2>
+      <p>本站可能链接到 GitHub 或其他外部页面。离开本站后的隐私规则，以对方页面为准。</p>
+    </section>
+  </main>
+
+  <div data-site-footer></div>
+  <script src="data/posts.js" defer></script>
+  <script src="data/products.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

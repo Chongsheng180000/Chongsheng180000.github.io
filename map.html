@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>站点地图 | 重生日记</title>
+  <meta name="description" content="重生日记的页面入口。">
+  <meta name="theme-color" content="#10110f">
+  <link rel="canonical" href="https://chongsheng180000.github.io/map.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('cs-theme');
+      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="map">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div data-site-header></div>
+  <main id="main" class="page-main">
+    <section class="page-hero shell compact">
+      <p class="eyebrow">Map</p>
+      <h1>站点地图</h1>
+      <p>所有主要入口放在这里，XML 版本给搜索引擎看。</p>
+    </section>
+    <section class="shell link-board">
+      <a href="index.html">首页</a>
+      <a href="posts.html">文章</a>
+      <a href="shop.html">商品</a>
+      <a href="about.html">关于</a>
+      <a href="contact.html">联系</a>
+      <a href="search.html">搜索</a>
+      <a href="privacy.html">隐私说明</a>
+      <a href="sitemap.xml">sitemap.xml</a>
+      <a href="rss.xml">rss.xml</a>
+    </section>
+  </main>
+  <div data-site-footer></div>
+  <script src="data/posts.js" defer></script>
+  <script src="data/products.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

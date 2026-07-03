@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="重生日记">
+  <rect width="64" height="64" rx="12" fill="#10110f"/>
+  <path d="M12 17h40v6H36v8h14v6H36v10h18v6H10v-6h18V37H14v-6h14v-8H12z" fill="#c7ff42"/>
+  <path d="M47 11h7v7h-7z" fill="#ff563f"/>
+</svg>

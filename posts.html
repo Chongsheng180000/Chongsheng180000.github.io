@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>文章 | 重生日记</title>
+  <meta name="description" content="重生日记的文章列表，包含随笔、日常、经验、思想、工具和商品说明。">
+  <meta name="theme-color" content="#10110f">
+  <link rel="canonical" href="https://chongsheng180000.github.io/posts.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="文章 | 重生日记">
+  <meta property="og:description" content="按分类、标签和关键词筛选文章。">
+  <meta property="og:url" content="https://chongsheng180000.github.io/posts.html">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('cs-theme');
+      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="posts">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div data-site-header></div>
+
+  <main id="main" class="page-main">
+    <section class="page-hero shell compact">
+      <p class="eyebrow">Archive</p>
+      <h1>文章</h1>
+      <p>随笔、日常、经验和一些商品说明都在这里。筛选不用太严肃，找到能用的那篇就行。</p>
+    </section>
+
+    <section class="shell archive-layout" aria-label="文章筛选和列表">
+      <aside class="filter-panel" aria-label="筛选">
+        <label class="field-label" for="post-search">搜索</label>
+        <input id="post-search" class="input" type="search" placeholder="标题、摘要、标签">
+
+        <label class="field-label" for="post-sort">排序</label>
+        <select id="post-sort" class="input">
+          <option value="newest">最新在前</option>
+          <option value="oldest">最早在前</option>
+        </select>
+
+        <div class="filter-group">
+          <p class="field-label">分类</p>
+          <div class="chip-list" id="category-filters"></div>
+        </div>
+
+        <div class="filter-group">
+          <p class="field-label">标签</p>
+          <div class="chip-list" id="tag-filters"></div>
+        </div>
+      </aside>
+
+      <div class="archive-results">
+        <div class="result-head">
+          <span id="post-count">0 篇</span>
+          <a class="text-link" href="rss.xml">RSS</a>
+        </div>
+        <div class="post-list" id="posts-list" aria-live="polite"></div>
+        <p class="empty-state" id="posts-empty" hidden>没找到。换个词，或者把筛选收一收。</p>
+      </div>
+    </section>
+  </main>
+
+  <div data-site-footer></div>
+  <script src="data/posts.js" defer></script>
+  <script src="data/products.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

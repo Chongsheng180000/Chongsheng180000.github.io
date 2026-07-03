@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>搜索 | 重生日记</title>
+  <meta name="description" content="搜索重生日记的文章、标签和商品。">
+  <meta name="theme-color" content="#10110f">
+  <link rel="canonical" href="https://chongsheng180000.github.io/search.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="搜索 | 重生日记">
+  <meta property="og:description" content="搜索文章标题、摘要、标签和商品名称。">
+  <meta property="og:url" content="https://chongsheng180000.github.io/search.html">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('cs-theme');
+      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="search">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div data-site-header></div>
+
+  <main id="main" class="page-main">
+    <section class="page-hero shell compact">
+      <p class="eyebrow">Search</p>
+      <h1>找文章，也找商品。</h1>
+      <p>标题、摘要、标签、商品名都会匹配。搜索只在前端完成，不上传关键词。</p>
+    </section>
+
+    <section class="shell search-page" aria-label="搜索">
+      <input id="global-search-input" class="search-input" type="search" placeholder="输入关键词">
+      <div class="search-columns">
+        <div>
+          <div class="result-head">
+            <span>文章</span>
+            <span id="search-post-count">0</span>
+          </div>
+          <div class="post-list compact-list" id="search-post-results"></div>
+        </div>
+        <div>
+          <div class="result-head">
+            <span>商品</span>
+            <span id="search-product-count">0</span>
+          </div>
+          <div class="product-mini-list" id="search-product-results"></div>
+        </div>
+      </div>
+      <p class="empty-state" id="search-empty" hidden>没有匹配内容。这个站还小，可能只是还没写到。</p>
+    </section>
+  </main>
+
+  <div data-site-footer></div>
+  <script src="data/posts.js" defer></script>
+  <script src="data/products.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/search.js" defer></script>
+</body>
+</html>

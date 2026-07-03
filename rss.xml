@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>重生日记</title>
+    <link>https://chongsheng180000.github.io/</link>
+    <description>日常、随笔、经验、工具和合规数字资源。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 04 Jul 2026 00:00:00 +0800</lastBuildDate>
+    <item>
+      <title>把博客重新搭起来的那天</title>
+      <link>https://chongsheng180000.github.io/post.html?slug=restart-the-blog</link>
+      <guid>https://chongsheng180000.github.io/post.html?slug=restart-the-blog</guid>
+      <pubDate>Sat, 04 Jul 2026 00:00:00 +0800</pubDate>
+      <description>从一行占位文字开始，把站点改成能长期写下去的样子。</description>
+    </item>
+    <item>
+      <title>我对脚本这件事的边界</title>
+      <link>https://chongsheng180000.github.io/post.html?slug=script-boundaries</link>
+      <guid>https://chongsheng180000.github.io/post.html?slug=script-boundaries</guid>
+      <pubDate>Thu, 02 Jul 2026 00:00:00 +0800</pubDate>
+      <description>脚本可以帮人少做重复劳动，但不能拿来偷东西、破坏规则或者把风险丢给别人。</description>
+    </item>
+  </channel>
+</rss>

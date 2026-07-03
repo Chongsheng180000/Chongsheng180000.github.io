@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>关于 | 重生日记</title>
+  <meta name="description" content="关于重生日记和站点主人：写东西、做网站、研究工具、折腾脚本、记录经验。">
+  <meta name="theme-color" content="#10110f">
+  <link rel="canonical" href="https://chongsheng180000.github.io/about.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="关于 | 重生日记">
+  <meta property="og:description" content="这个站点先写人，再写功能。">
+  <meta property="og:url" content="https://chongsheng180000.github.io/about.html">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('cs-theme');
+      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="about">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div data-site-header></div>
+
+  <main id="main" class="page-main">
+    <section class="page-hero shell compact">
+      <p class="eyebrow">About</p>
+      <h1>我不太想把自己写得很圆满。</h1>
+      <p>会写东西，会做网站，会折腾脚本和工具。很多东西还在试，但能跑通的经验会留下来。</p>
+    </section>
+
+    <section class="shell prose-page">
+      <h2>这个站点放什么</h2>
+      <p>日常、随笔、经验、工具记录，还有一些可以交付的数字资源。文章不一定都长，也不一定每篇都要讲大道理。能说明白的就写清楚，说明不白的先放一放。</p>
+
+      <h2>我在意什么</h2>
+      <p>我更在意一件事是否真的能用：一个页面能不能读，一个脚本有没有边界，一个商品是不是说得清楚。漂亮很重要，但漂亮不能替代内容。</p>
+
+      <h2>关于商品</h2>
+      <p>商品页里的脚本、模板、教程都先走咨询购买。不会在前端塞支付密钥，也不会做自动发货。涉及平台规则、账号安全、版权边界的内容，一律不做灰色处理。</p>
+
+      <h2>写作口味</h2>
+      <p>偏短，偏直接。偶尔冷一点。好处是不用把普通事包装成很大的东西；坏处是有些文章可能像备忘录。</p>
+    </section>
+  </main>
+
+  <div data-site-footer></div>
+  <script src="data/posts.js" defer></script>
+  <script src="data/products.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

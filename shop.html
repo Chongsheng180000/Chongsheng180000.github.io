@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商品 | 重生日记</title>
+  <meta name="description" content="重生日记的数字商品、工具脚本、教程资源展示页。仅展示和咨询，不接入真实支付。">
+  <meta name="theme-color" content="#10110f">
+  <link rel="canonical" href="https://chongsheng180000.github.io/shop.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="商品 | 重生日记">
+  <meta property="og:description" content="合规数字商品、工具脚本、教程资源和咨询入口。">
+  <meta property="og:url" content="https://chongsheng180000.github.io/shop.html">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('cs-theme');
+      const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="shop">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div data-site-header></div>
+
+  <main id="main" class="page-main">
+    <section class="page-hero shell compact shop-hero">
+      <p class="eyebrow">Shop</p>
+      <h1>数字商品和能说清边界的工具。</h1>
+      <p>这里先做展示、说明和联系购买。自动支付、自动发货都暂不开放，避免把问题藏进流程里。</p>
+    </section>
+
+    <section class="shell">
+      <div class="notice-panel">
+        <strong>合规声明</strong>
+        <p>不提供侵犯平台或他人权益的内容；不售卖作弊、破解、盗号、绕过平台规则的工具。所有脚本仅限学习、效率、配置、个人自动化和合法场景。</p>
+      </div>
+      <div class="shop-toolbar" aria-label="商品筛选">
+        <button class="chip active" type="button" data-product-filter="all">全部</button>
+        <button class="chip" type="button" data-product-filter="脚本">脚本</button>
+        <button class="chip" type="button" data-product-filter="模板">模板</button>
+        <button class="chip" type="button" data-product-filter="教程">教程</button>
+        <button class="chip" type="button" data-product-filter="咨询">咨询</button>
+      </div>
+      <div class="product-grid" id="shop-products" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div data-site-footer></div>
+  <script src="data/posts.js" defer></script>
+  <script src="data/products.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

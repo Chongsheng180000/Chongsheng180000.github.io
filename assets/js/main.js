@@ -404,6 +404,30 @@
     update();
   }
 
+  function initCockpitMotion() {
+    const cockpit = $('[data-cockpit]');
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!cockpit || !finePointer || reduceMotion) return;
+
+    cockpit.addEventListener('pointermove', (event) => {
+      const rect = cockpit.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      cockpit.style.setProperty('--tilt-x', `${(x - 0.5) * 1.8}deg`);
+      cockpit.style.setProperty('--tilt-y', `${(0.5 - y) * 1.2}deg`);
+      cockpit.style.setProperty('--glow-x', `${x * 100}%`);
+      cockpit.style.setProperty('--glow-y', `${y * 100}%`);
+    }, { passive: true });
+
+    cockpit.addEventListener('pointerleave', () => {
+      cockpit.style.setProperty('--tilt-x', '0deg');
+      cockpit.style.setProperty('--tilt-y', '0deg');
+      cockpit.style.setProperty('--glow-x', '50%');
+      cockpit.style.setProperty('--glow-y', '28%');
+    });
+  }
+
   function initReveal() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion || !('IntersectionObserver' in window)) return;
@@ -428,6 +452,7 @@
   renderPostsPage();
   renderPostDetail();
   renderShopPage();
+  initCockpitMotion();
   initCursor();
   initReveal();
 })();

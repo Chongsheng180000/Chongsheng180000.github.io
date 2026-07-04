@@ -166,6 +166,7 @@
     let ry = y;
 
     window.addEventListener('pointermove', (event) => {
+      document.body.classList.add('cursor-ready');
       x = event.clientX;
       y = event.clientY;
       dot.style.transform = `translate(${x}px, ${y}px)`;

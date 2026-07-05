@@ -94,6 +94,8 @@
     }
   ];
 
+  const primaryDriveModeOrder = ['read', 'build', 'archive', 'shelf'];
+
   const starlightModes = [
     { id: 'on', zh: '开启', en: 'On' },
     { id: 'dim', zh: '微光', en: 'Dim' },
@@ -172,7 +174,10 @@
     selectedPanel: 0,
     starlightMode: initialStarlight,
     statusFocus: 'record',
-    minimal: false
+    minimal: false,
+    steeringVelocity: 0,
+    steeringPointerDown: false,
+    lastSteerAt: performance.now()
   };
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -221,7 +226,10 @@
   function setCruiseMode(mode) {
     if (mode !== 'paused') state.previousCruiseMode = mode;
     state.cruiseMode = mode;
-    if (mode === 'auto') state.steeringAngle = 0;
+    if (mode === 'auto') {
+      state.lastSteerAt = performance.now() - 220;
+      state.steeringVelocity += state.steeringAngle * -0.018;
+    }
     render();
   }
 
@@ -242,7 +250,7 @@
   function setDriveMode(modeId, options = {}) {
     if (!driveModes.some((mode) => mode.id === modeId)) return;
     state.driveMode = modeId;
-    state.selectedPanel = Math.max(0, panels.indexOf(modeId === 'archive' ? 'read' : modeId === 'night' ? 'daily' : modeId));
+    state.selectedPanel = Math.max(0, panels.indexOf(modeId === 'archive' ? 'daily' : modeId === 'night' ? 'shelf' : modeId));
     const mode = currentDriveMode();
     state.statusFocus = mode.accentStatus;
     if (options.syncAmbient && mode.preferredTheme) {
@@ -261,6 +269,13 @@
   function cycleDriveMode(step = 1) {
     const index = driveModes.findIndex((mode) => mode.id === state.driveMode);
     setDriveMode(driveModes[(index + step + driveModes.length) % driveModes.length].id, { syncAmbient: true });
+  }
+
+  function cyclePrimaryDriveMode(step = 1) {
+    const index = primaryDriveModeOrder.indexOf(state.driveMode);
+    const safeIndex = index >= 0 ? index : 0;
+    const next = primaryDriveModeOrder[(safeIndex + step + primaryDriveModeOrder.length) % primaryDriveModeOrder.length];
+    setDriveMode(next, { syncAmbient: true });
   }
 
   function cycleTheme(step = 1) {
@@ -301,6 +316,8 @@
 
   function steer(delta) {
     state.steeringAngle = clamp(state.steeringAngle + delta, -18, 18);
+    state.steeringVelocity += delta * 0.11;
+    state.lastSteerAt = performance.now();
     if (state.cruiseMode !== 'paused') state.cruiseMode = 'manual';
     render();
   }
@@ -344,7 +361,7 @@
         cycleTheme(1);
         break;
       case 'mode':
-        cycleDriveMode(1);
+        cyclePrimaryDriveMode(1);
         break;
       case 'cruise':
         toggleCruise();
@@ -551,7 +568,7 @@
       arrowup: () => changeSpeed(0.18),
       s: () => changeSpeed(-0.18),
       arrowdown: () => changeSpeed(-0.18),
-      m: () => cycleDriveMode(1),
+      m: () => cyclePrimaryDriveMode(1),
       l: () => cycleTheme(1)
     };
     if (map[key]) {
@@ -568,13 +585,17 @@
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * 180 / Math.PI;
-      state.steeringAngle = clamp((angle + 90) * 0.28, -18, 18);
+      const nextAngle = clamp((angle + 90) * 0.28, -18, 18);
+      state.steeringVelocity = (nextAngle - state.steeringAngle) * 0.18;
+      state.steeringAngle = nextAngle;
+      state.lastSteerAt = performance.now();
       if (state.cruiseMode !== 'paused') state.cruiseMode = 'manual';
       render();
     };
     steeringRim.addEventListener('pointerdown', (event) => {
       if (event.target.closest('button')) return;
       dragging = true;
+      state.steeringPointerDown = true;
       steeringRim.setPointerCapture(event.pointerId);
       updateFromPointer(event);
     });
@@ -583,10 +604,15 @@
     });
     steeringRim.addEventListener('pointerup', (event) => {
       dragging = false;
+      state.steeringPointerDown = false;
+      state.lastSteerAt = performance.now();
+      state.steeringVelocity += state.steeringAngle * -0.028;
       try { steeringRim.releasePointerCapture(event.pointerId); } catch {}
     });
     steeringRim.addEventListener('pointercancel', () => {
       dragging = false;
+      state.steeringPointerDown = false;
+      state.lastSteerAt = performance.now();
     });
   }
 
@@ -600,7 +626,7 @@
       }
       if (event.target.closest('[data-mode-cycle]')) {
         event.preventDefault();
-        cycleDriveMode(1);
+        cyclePrimaryDriveMode(1);
         return;
       }
       if (event.target.closest('[data-ambient-cycle]')) {
@@ -670,12 +696,28 @@
     document.addEventListener('keydown', handleKeydown);
   }
 
-  function initAutoReturn() {
+  function initSteeringPhysics() {
     if (reduceMotion) return;
+    let lastFrame = performance.now();
     const tick = () => {
-      if (state.cruiseMode === 'auto' && Math.abs(state.steeringAngle) > 0.05) {
-        state.steeringAngle *= 0.88;
-        if (Math.abs(state.steeringAngle) < 0.05) state.steeringAngle = 0;
+      const now = performance.now();
+      const elapsed = Math.min(34, now - lastFrame) / 16.67;
+      lastFrame = now;
+      const shouldCenter = state.cruiseMode !== 'paused'
+        && !state.steeringPointerDown
+        && (Math.abs(state.steeringAngle) > 0.035 || Math.abs(state.steeringVelocity) > 0.015)
+        && now - state.lastSteerAt > 110;
+      if (shouldCenter) {
+        const speedAssist = clamp(state.speed, 0.35, 2.2) * 0.004;
+        const spring = state.cruiseMode === 'manual' ? 0.055 : 0.075;
+        const damping = state.cruiseMode === 'manual' ? 0.73 : 0.68;
+        state.steeringVelocity += (-state.steeringAngle * (spring + speedAssist)) * elapsed;
+        state.steeringVelocity *= Math.pow(damping, elapsed);
+        state.steeringAngle = clamp(state.steeringAngle + state.steeringVelocity * elapsed, -18, 18);
+        if (Math.abs(state.steeringAngle) < 0.045 && Math.abs(state.steeringVelocity) < 0.012) {
+          state.steeringAngle = 0;
+          state.steeringVelocity = 0;
+        }
         render();
       }
       window.requestAnimationFrame(tick);
@@ -685,7 +727,7 @@
 
   initControls();
   initDragging();
-  initAutoReturn();
+  initSteeringPhysics();
   window.addEventListener('cs:languagechange', render);
   render();
 })();

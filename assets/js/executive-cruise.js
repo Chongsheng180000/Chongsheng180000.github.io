@@ -462,8 +462,23 @@
       ? 160
       : clamp(12 / state.speed, 4, 28);
 
+    const engineLoad = state.cruiseMode === 'paused'
+      ? 0.08
+      : clamp((state.speed - 0.35) / 1.85, 0.08, 1);
+    const steeringDrift = state.steeringAngle * -1.15;
+
     root.style.setProperty('--steering-angle', `${state.steeringAngle}deg`);
     root.style.setProperty('--road-offset', `${state.steeringAngle * -0.55}px`);
+    root.style.setProperty('--scenery-offset', `${steeringDrift}px`);
+    root.style.setProperty('--city-offset', `${steeringDrift * 0.55}px`);
+    root.style.setProperty('--steering-drift', `${steeringDrift}px`);
+    root.style.setProperty('--engine-load', engineLoad.toFixed(3));
+    root.style.setProperty('--guardrail-opacity', (0.28 + engineLoad * 0.2).toFixed(3));
+    root.style.setProperty('--route-opacity', (0.5 + engineLoad * 0.24).toFixed(3));
+    root.style.setProperty('--road-opacity', (0.36 + engineLoad * 0.28).toFixed(3));
+    root.style.setProperty('--light-opacity', (0.24 + engineLoad * 0.28).toFixed(3));
+    root.style.setProperty('--wheel-saturate', (0.96 + engineLoad * 0.08).toFixed(3));
+    root.style.setProperty('--wheel-shadow-offset', `${steeringDrift * 0.08}px`);
     root.style.setProperty('--cruise-duration', `${duration}s`);
     root.style.setProperty('--light-duration', `${lightDuration}s`);
 

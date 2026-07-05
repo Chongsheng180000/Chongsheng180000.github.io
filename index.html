@@ -20,130 +20,258 @@
       const saved = localStorage.getItem('cs-theme');
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      const lang = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/executive-os.css">
+  <link rel="stylesheet" href="assets/css/executive-home.css">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main">跳到正文</a>
   <div data-site-header></div>
 
   <main id="main">
-    <section class="luxury-cockpit-hero shell" aria-labelledby="hero-title">
-      <div class="luxury-cockpit-shell" data-cockpit>
-        <div class="starlight-canopy" aria-hidden="true"></div>
-        <div class="cabin-pillar left" aria-hidden="true"></div>
-        <div class="cabin-pillar right" aria-hidden="true"></div>
-        <div class="ambient-belt" aria-hidden="true"></div>
-        <div class="wood-veneer-belt" aria-hidden="true"></div>
+    <section class="executive-cockpit-home shell ambient-theme-obsidian-gold" aria-labelledby="hero-title" data-cruise-root data-cruise-mode="auto" data-drive-mode="read" data-ambient-theme="obsidian-gold">
+      <div class="executive-cockpit-shell leather-black ambient-glow" data-cockpit tabindex="0" aria-label="重生行政座舱">
+        <div class="executive-starlight starlight-roof starlight-roof--strong starlight-roof--mobile-reduced" aria-label="星空内容索引">
+          <a class="constellation-star is-latest" href="post.html?slug=restart-the-blog" style="--sx: 22%; --sy: 28%; --star-color: var(--ambient-white)" data-constellation-star data-kind="latest" aria-label="最新文章：把博客重新搭起来的那天"></a>
+          <a class="constellation-star" href="posts.html?category=%E6%97%A5%E5%B8%B8" style="--sx: 34%; --sy: 38%; --star-color: var(--ambient-white)" data-constellation-star data-kind="daily" aria-label="日常记录"></a>
+          <a class="constellation-star" href="posts.html?category=%E5%B7%A5%E5%85%B7" style="--sx: 49%; --sy: 24%; --star-color: var(--ambient-blue)" data-constellation-star data-kind="tools" aria-label="工具和脚本"></a>
+          <a class="constellation-star" href="shop.html" style="--sx: 66%; --sy: 34%; --star-color: var(--metal-gold)" data-constellation-star data-kind="shelf" aria-label="Digital Shelf 数字资源"></a>
+          <a class="constellation-star" href="posts.html?category=%E6%80%9D%E6%83%B3" style="--sx: 78%; --sy: 23%; --star-color: var(--ambient-violet)" data-constellation-star data-kind="thought" aria-label="思想和判断"></a>
+        </div>
 
-        <div class="cockpit-dashboard">
-          <div class="panoramic-assembly">
-            <aside class="driver-log-display" aria-label="today.log online">
-              <div class="display-chrome">
-                <div class="display-head">
-                  <span>today.log</span>
-                  <em>online</em>
-                </div>
-                <ol>
-                  <li><time>00:17</time><span>换一副更像自己的骨架</span></li>
-                  <li><time>09:31</time><span>文章入口重新分区</span></li>
-                  <li><time>13:42</time><span>脚本先写边界</span></li>
-                  <li><time>21:06</time><span>经验先记，明天再修</span></li>
-                </ol>
+        <div class="windshield-frame smoked-glass" aria-hidden="true" data-cruise-visual>
+          <div class="windshield-city">
+            <span style="--x: 8%; --y: 48%; --d: 0s"></span>
+            <span style="--x: 18%; --y: 36%; --d: .7s"></span>
+            <span style="--x: 28%; --y: 42%; --d: 1.4s"></span>
+            <span style="--x: 41%; --y: 30%; --d: .3s"></span>
+            <span style="--x: 54%; --y: 38%; --d: 1s"></span>
+            <span style="--x: 66%; --y: 32%; --d: 1.8s"></span>
+            <span style="--x: 78%; --y: 44%; --d: .9s"></span>
+            <span style="--x: 91%; --y: 35%; --d: 1.3s"></span>
+          </div>
+          <div class="cruise-light-stream">
+            <span style="--lane: 16%; --delay: -1s"></span>
+            <span style="--lane: 84%; --delay: -2.6s"></span>
+            <span style="--lane: 24%; --delay: -4.2s"></span>
+            <span style="--lane: 76%; --delay: -5.4s"></span>
+          </div>
+          <div class="route-perspective">
+            <i></i><i></i><i></i>
+            <div class="road-motion"></div>
+          </div>
+        </div>
+
+        <div class="cabin-side left" aria-hidden="true"></div>
+        <div class="cabin-side right" aria-hidden="true"></div>
+        <div class="walnut-trim dark-walnut" aria-hidden="true"></div>
+        <div class="cockpit-ambient-rail" aria-hidden="true"></div>
+
+        <div class="executive-dashboard">
+          <div class="cockpit-display-row">
+            <aside class="driver-log-screen luxury-panel is-screen" aria-label="今日日志在线">
+              <div class="cockpit-panel-head">
+                <span data-i18n-zh="今日日志" data-i18n-en="today.log">今日日志</span>
+                <em><i class="exec-status-dot"></i><span data-i18n-zh="在线" data-i18n-en="online">在线</span></em>
               </div>
+              <ol class="driver-log-list">
+                <li><time>00:17</time><span data-i18n-zh="给博客换一副更像自己的骨架" data-i18n-en="Refit the blog with a frame that feels closer">给博客换一副更像自己的骨架</span></li>
+                <li><time>09:31</time><span data-i18n-zh="整理文章入口，不把日常和商品混在一起" data-i18n-en="Separate writing entries from shelf entries">整理文章入口，不把日常和商品混在一起</span></li>
+                <li><time>13:42</time><span data-i18n-zh="脚本能省时间，但边界要先写清楚" data-i18n-en="Scripts save time, but boundaries come first">脚本能省时间，但边界要先写清楚</span></li>
+                <li><time>21:06</time><span data-i18n-zh="今天的经验先记下来，明天再修辞" data-i18n-en="Write today’s lesson now; polish it tomorrow">今天的经验先记下来，明天再修辞</span></li>
+              </ol>
             </aside>
 
-            <section class="panoramic-main-console" aria-label="CHONGSHENG DAILY OS">
-              <div class="main-glass">
-                <div class="main-copy">
-                  <p class="os-label">CHONGSHENG DAILY OS</p>
-                  <h1 id="hero-title"><span>把日子写下来，</span><span>把工具磨顺手</span></h1>
-                  <p>日常先落地，经验再整理；工具慢慢磨，能复用的东西放到明处。</p>
-                  <nav class="control-key-bank" aria-label="主要控制键">
-                    <a class="cockpit-control primary" href="posts.html">Start Reading</a>
-                    <a class="cockpit-control" href="shop.html">Open Shelf</a>
-                    <a class="cockpit-control" href="search.html">Enter Console</a>
-                  </nav>
-                </div>
-
-                <div class="system-status-cluster" aria-label="系统状态">
-                  <div class="cluster-head">
-                    <span>Knowledge System</span>
-                    <em>calm telemetry</em>
+            <section class="main-console-screen luxury-panel is-screen piano-black" aria-label="重生日常系统">
+              <div class="console-copy">
+                <p class="exec-kicker" data-i18n-zh="重生日常系统" data-i18n-en="CHONGSHENG DAILY OS">重生日常系统</p>
+                <h1 id="hero-title"><span data-i18n-zh="把日子写下来，" data-i18n-en="Write the days down,">把日子写下来，</span><span data-i18n-zh="把工具磨顺手" data-i18n-en="make the tools smoother">把工具磨顺手</span></h1>
+                <p data-i18n-zh="日常先落地，经验再整理；工具慢慢磨，能复用的东西放到明处。" data-i18n-en="Write the day down first. Sort the lessons later. Keep useful tools where they can be found.">日常先落地，经验再整理；工具慢慢磨，能复用的东西放到明处。</p>
+                <nav class="console-controls" aria-label="首页主要入口">
+                  <a class="luxury-button luxury-button--primary" href="posts.html" data-i18n-zh="开始阅读" data-i18n-en="Start Reading">开始阅读</a>
+                  <a class="luxury-button luxury-button--secondary" href="shop.html" data-i18n-zh="打开货架" data-i18n-en="Open Shelf">打开货架</a>
+                  <a class="luxury-button luxury-button--console" href="search.html" data-i18n-zh="进入控制台" data-i18n-en="Enter Console">进入控制台</a>
+                  <button class="luxury-button luxury-button--metal" type="button" data-cruise-toggle aria-pressed="false" data-i18n-zh="接管巡航" data-i18n-en="Take Control">接管巡航</button>
+                </nav>
+                <div class="console-control-strip" aria-label="Drive Mode 和座舱控制">
+                  <div class="drive-mode-switcher" data-drive-mode-switcher>
+                    <button type="button" data-drive-mode-button="read" aria-pressed="true" data-i18n-zh="阅读" data-i18n-en="Read">阅读</button>
+                    <button type="button" data-drive-mode-button="build" data-i18n-zh="打磨" data-i18n-en="Build">打磨</button>
+                    <button type="button" data-drive-mode-button="shelf" data-i18n-zh="货架" data-i18n-en="Shelf">货架</button>
+                    <button type="button" data-drive-mode-button="archive" data-i18n-zh="归档" data-i18n-en="Archive">归档</button>
+                    <button type="button" data-drive-mode-button="night" data-i18n-zh="夜巡" data-i18n-en="Night">夜巡</button>
                   </div>
-                  <div class="hmi-channel" style="--level: 68">
-                    <i class="micro-arc"></i>
-                    <span>Record</span>
-                    <b></b>
-                    <em>68</em>
-                  </div>
-                  <div class="hmi-channel" style="--level: 74">
-                    <i class="micro-arc"></i>
-                    <span>Build</span>
-                    <b></b>
-                    <em>74</em>
-                  </div>
-                  <div class="hmi-channel" style="--level: 43">
-                    <i class="micro-arc"></i>
-                    <span>Shelf</span>
-                    <b></b>
-                    <em>43</em>
-                  </div>
-                  <div class="hmi-channel" style="--level: 56">
-                    <i class="micro-arc"></i>
-                    <span>Thought</span>
-                    <b></b>
-                    <em>56</em>
-                  </div>
-                  <div class="telemetry-line" aria-hidden="true">
-                    <span></span><span></span><span></span><span></span>
+                  <div class="console-system-controls">
+                    <button type="button" data-ambient-cycle data-i18n-zh="氛围灯" data-i18n-en="Ambient">氛围灯</button>
+                    <button type="button" data-starlight-cycle><span data-i18n-zh="星空" data-i18n-en="Starlight">星空</span>: <span data-starlight-control-label>开启</span></button>
+                    <button type="button" data-ambient-reset data-i18n-zh="重置氛围" data-i18n-en="Reset Ambient">重置氛围</button>
                   </div>
                 </div>
               </div>
+              <div class="console-route-strip" aria-label="站点入口">
+                <a href="posts.html" data-console-panel="read" aria-current="true" data-i18n-zh="个人写作" data-i18n-en="Personal Writing">个人写作</a>
+                <a href="shop.html" data-console-panel="build" data-i18n-zh="工具脚本" data-i18n-en="Tools & Scripts">工具脚本</a>
+                <a href="posts.html?category=%E6%97%A5%E5%B8%B8" data-console-panel="daily" data-i18n-zh="日常笔记" data-i18n-en="Daily Notes">日常笔记</a>
+                <a href="shop.html" data-console-panel="shelf" data-i18n-zh="数字货架" data-i18n-en="Digital Shelf">数字货架</a>
+              </div>
+              <div class="console-mode-panel" data-console-mode-panel aria-live="polite"></div>
             </section>
 
-            <aside class="passenger-shelf-display" aria-label="Digital Shelf">
-              <div class="display-chrome">
-                <div class="display-head">
-                  <span>Digital Shelf</span>
-                  <em>curated</em>
-                </div>
-                <p>能复用的东西放这里。</p>
-                <nav class="shelf-tile-grid" aria-label="资源入口">
-                  <a href="shop.html"><span>Scripts</span><small>效率脚本</small></a>
-                  <a href="shop.html"><span>Templates</span><small>静态模板</small></a>
-                  <a href="shop.html"><span>Tutorials</span><small>工具教程</small></a>
-                  <a href="contact.html"><span>Consulting</span><small>合作咨询</small></a>
-                </nav>
+            <aside class="passenger-shelf-screen luxury-panel is-screen" aria-label="数字货架">
+              <div class="cockpit-panel-head">
+                <span data-i18n-zh="数字货架" data-i18n-en="Digital Shelf">数字货架</span>
+                <em><i class="exec-status-dot"></i><span data-i18n-zh="已整理" data-i18n-en="curated">已整理</span></em>
               </div>
+              <p data-i18n-zh="能复用的东西放到明处。" data-i18n-en="Reusable things stay visible.">能复用的东西放到明处。</p>
+              <nav class="shelf-control-grid" aria-label="资源入口">
+                <a href="shop.html"><span data-i18n-zh="脚本" data-i18n-en="Scripts">脚本</span><small data-i18n-zh="效率脚本" data-i18n-en="Automation">效率脚本</small></a>
+                <a href="shop.html"><span data-i18n-zh="模板" data-i18n-en="Templates">模板</span><small data-i18n-zh="静态模板" data-i18n-en="Static kits">静态模板</small></a>
+                <a href="shop.html"><span data-i18n-zh="教程" data-i18n-en="Tutorials">教程</span><small data-i18n-zh="工具教程" data-i18n-en="Tool notes">工具教程</small></a>
+                <a href="contact.html"><span data-i18n-zh="咨询" data-i18n-en="Consulting">咨询</span><small data-i18n-zh="合作咨询" data-i18n-en="Requests">合作咨询</small></a>
+              </nav>
             </aside>
           </div>
 
-          <footer class="interaction-light-bar" aria-label="系统状态栏">
-            <a href="rss.xml">RSS</a>
-            <a href="posts.html">Archive</a>
-            <span>Boundary Clear</span>
-            <span>Mode: Write / Build / Sell</span>
-          </footer>
+          <div class="instrument-deck smoked-glass" aria-label="博客状态仪表">
+            <div class="instrument-cluster-preview">
+              <article class="instrument-gauge" data-status="record" style="--level: 68%; --dash: 68">
+                <svg class="gauge-arc" viewBox="0 0 72 46" aria-hidden="true">
+                  <path class="gauge-track" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                  <path class="gauge-value" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                </svg>
+                <span data-i18n-zh="记录" data-i18n-en="Record">记录</span><strong>68</strong><small data-i18n-zh="日常记录" data-i18n-en="Daily">日常记录</small>
+              </article>
+              <article class="instrument-gauge" data-status="build" style="--level: 74%; --dash: 74">
+                <svg class="gauge-arc" viewBox="0 0 72 46" aria-hidden="true">
+                  <path class="gauge-track" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                  <path class="gauge-value" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                </svg>
+                <span data-i18n-zh="打磨" data-i18n-en="Build">打磨</span><strong>74</strong><small data-i18n-zh="工具打磨" data-i18n-en="Tools">工具打磨</small>
+              </article>
+              <article class="instrument-gauge" data-status="shelf" style="--level: 43%; --dash: 43">
+                <svg class="gauge-arc" viewBox="0 0 72 46" aria-hidden="true">
+                  <path class="gauge-track" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                  <path class="gauge-value" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                </svg>
+                <span data-i18n-zh="货架" data-i18n-en="Shelf">货架</span><strong>43</strong><small data-i18n-zh="资源整理" data-i18n-en="Resources">资源整理</small>
+              </article>
+              <article class="instrument-gauge" data-status="thought" style="--level: 56%; --dash: 56">
+                <svg class="gauge-arc" viewBox="0 0 72 46" aria-hidden="true">
+                  <path class="gauge-track" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                  <path class="gauge-value" d="M8 38 A28 28 0 0 1 64 38" pathLength="100"></path>
+                </svg>
+                <span data-i18n-zh="思考" data-i18n-en="Thought">思考</span><strong>56</strong><small data-i18n-zh="判断沉淀" data-i18n-en="Judgment">判断沉淀</small>
+              </article>
+            </div>
+            <div class="steering-controller steering-controller--layered" data-steering-controller aria-label="Layered Luxury Steering Controller">
+              <button class="steering-paddle steering-paddle--left" type="button" data-steering-action="prev" aria-label="上一篇或上一个中控模块">‹</button>
+              <button class="steering-paddle steering-paddle--right" type="button" data-steering-action="next" aria-label="下一篇或下一个中控模块">›</button>
+              <div class="steering-backlight" aria-hidden="true"></div>
+
+              <div class="steering-rim" data-steering-rim>
+                <div class="rim-leather-layer" aria-hidden="true"></div>
+                <div class="rim-inner-shadow" aria-hidden="true"></div>
+                <div class="steering-stitching steering-stitching--left" aria-hidden="true"></div>
+                <div class="steering-stitching steering-stitching--right" aria-hidden="true"></div>
+                <div class="steering-spoke steering-spoke--left" aria-hidden="true"></div>
+                <div class="steering-spoke steering-spoke--right" aria-hidden="true"></div>
+                <div class="steering-wood-spoke steering-wood-spoke--left" aria-hidden="true"></div>
+                <div class="steering-wood-spoke steering-wood-spoke--right" aria-hidden="true"></div>
+                <div class="steering-lower-bridge" aria-hidden="true"></div>
+                <div class="steering-lower-wood" aria-hidden="true"></div>
+
+                <div class="control-island control-island--left" role="group" aria-label="Left steering controls">
+                  <button class="embedded-steering-button embedded-steering-button--stack" type="button" data-steering-action="prev" aria-label="上一篇或上一个中控模块" data-i18n-zh="上篇" data-i18n-en="Prev">上篇</button>
+                  <button class="steering-roller" type="button" data-steering-action="category" aria-label="切换文章分类">
+                    <span data-i18n-zh="分类" data-i18n-en="Category">分类</span>
+                  </button>
+                  <button class="embedded-steering-button embedded-steering-button--stack" type="button" data-steering-action="next" aria-label="下一篇或下一个中控模块" data-i18n-zh="下篇" data-i18n-en="Next">下篇</button>
+                  <div class="control-island__mini">
+                    <button class="embedded-steering-button" type="button" data-steering-action="search" aria-label="打开搜索" data-i18n-zh="搜索" data-i18n-en="Search">搜索</button>
+                    <button class="embedded-steering-button" type="button" data-steering-action="star" aria-label="打开精选文章" data-i18n-zh="精选" data-i18n-en="Star">精选</button>
+                  </div>
+                </div>
+
+                <button class="steering-hub" type="button" data-steering-action="home" aria-label="Home / CHONGSHENG DAILY OS">
+                  <span data-i18n-zh="重生" data-i18n-en="CHONGSHENG">重生</span>
+                  <strong data-i18n-zh="座舱" data-i18n-en="OS">座舱</strong>
+                  <i aria-hidden="true"></i>
+                </button>
+
+                <div class="control-island control-island--right" role="group" aria-label="Right steering controls">
+                  <button class="embedded-steering-button embedded-steering-button--stack" type="button" data-steering-action="mode" aria-label="切换模式" data-i18n-zh="模式" data-i18n-en="Mode">模式</button>
+                  <button class="steering-roller" type="button" data-steering-action="ambient" aria-label="切换氛围灯主题">
+                    <span data-i18n-zh="氛围" data-i18n-en="Ambient">氛围</span>
+                  </button>
+                  <button class="embedded-steering-button embedded-steering-button--stack" type="button" data-steering-action="shelf" aria-label="打开货架" data-i18n-zh="货架" data-i18n-en="Shelf">货架</button>
+                  <div class="control-island__mini">
+                    <button class="embedded-steering-button" type="button" data-steering-action="archive" aria-label="打开归档" data-i18n-zh="归档" data-i18n-en="Archive">归档</button>
+                    <button class="embedded-steering-button" type="button" data-steering-action="cruise" aria-label="切换巡航" data-i18n-zh="巡航" data-i18n-en="Cruise">巡航</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="instrument-readouts">
+              <span><em data-i18n-zh="里程" data-i18n-en="Mileage">里程</em><strong data-mileage-readout>6 篇</strong></span>
+              <span><em data-i18n-zh="信号" data-i18n-en="Signal">信号</em><strong data-signal-readout>订阅正常</strong></span>
+              <span><em data-i18n-zh="巡航" data-i18n-en="Cruise">巡航</em><strong data-cruise-readout>自动</strong></span>
+              <span><em data-i18n-zh="模式" data-i18n-en="Mode">模式</em><strong data-drive-mode-readout>阅读</strong></span>
+            </div>
+          </div>
+
+          <nav class="home-interaction-light-bar interaction-bar" aria-label="座舱控制状态栏">
+            <a class="interaction-bar__item" href="rss.xml"><span class="interaction-bar__status-dot"></span><span data-i18n-zh="订阅" data-i18n-en="RSS">订阅</span></a>
+            <a class="interaction-bar__item" href="posts.html" data-i18n-zh="归档" data-i18n-en="Archive">归档</a>
+            <span class="interaction-bar__item" data-i18n-zh="边界清晰" data-i18n-en="Boundary Clear">边界清晰</span>
+            <button class="interaction-bar__item" type="button" data-mode-cycle aria-current="true"><span data-i18n-zh="模式" data-i18n-en="Mode">模式</span>: <b data-lightbar-mode>阅读</b></button>
+            <button class="interaction-bar__item" type="button" data-starlight-cycle><span data-i18n-zh="星空" data-i18n-en="Starlight">星空</span>: <b data-starlight-readout>开启</b></button>
+            <button class="interaction-bar__item" type="button" data-ambient-cycle><span data-i18n-zh="氛围" data-i18n-en="Ambient">氛围</span>: <b data-ambient-readout>黑曜金</b></button>
+            <span class="interaction-bar__item"><span data-i18n-zh="巡航" data-i18n-en="Cruise">巡航</span>: <b data-lightbar-cruise>自动</b></span>
+          </nav>
+
+          <nav class="mini-control-pad" aria-label="移动端巡航控制盘">
+            <button type="button" data-steering-action="mode" aria-label="切换模式" data-i18n-zh="模式" data-i18n-en="Mode">模式</button>
+            <button type="button" data-steering-action="ambient" aria-label="切换氛围灯" data-i18n-zh="氛围" data-i18n-en="Ambient">氛围</button>
+            <button type="button" data-steering-action="search" aria-label="打开搜索" data-i18n-zh="搜索" data-i18n-en="Search">搜索</button>
+            <button type="button" data-steering-action="archive" aria-label="打开归档" data-i18n-zh="归档" data-i18n-en="Archive">归档</button>
+            <button type="button" data-steering-action="shelf" aria-label="打开商品页" data-i18n-zh="货架" data-i18n-en="Shelf">货架</button>
+            <button type="button" data-steering-action="cruise" aria-label="切换巡航模式" data-i18n-zh="巡航" data-i18n-en="Cruise">巡航</button>
+          </nav>
+
+          <div class="navigation-input-overlay smoked-glass" data-search-overlay hidden>
+            <div>
+              <p class="exec-kicker" data-i18n-zh="导航输入" data-i18n-en="Navigation Input">导航输入</p>
+              <label for="executive-search-input" data-i18n-zh="搜索文章、标签或商品" data-i18n-en="Search articles, tags, or products">搜索文章、标签或商品</label>
+              <input id="executive-search-input" type="search" data-cruise-search placeholder="输入关键词" data-i18n-placeholder-zh="输入关键词" data-i18n-placeholder-en="Type keywords">
+            </div>
+            <div class="navigation-input-actions">
+              <button class="luxury-button luxury-button--primary" type="button" data-search-submit data-i18n-zh="打开搜索" data-i18n-en="Open Search">打开搜索</button>
+              <button class="luxury-button luxury-button--ghost" type="button" data-search-close data-i18n-zh="关闭" data-i18n-en="Close">关闭</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section shell" aria-labelledby="recent-title">
       <div class="section-heading">
-        <p class="eyebrow">Recent</p>
-        <h2 id="recent-title">近期文章</h2>
-        <a class="text-link" href="posts.html">全部文章</a>
+        <p class="eyebrow" data-i18n-zh="近期" data-i18n-en="Recent">近期</p>
+        <h2 id="recent-title" data-i18n-zh="近期文章" data-i18n-en="Recent Routes">近期文章</h2>
+        <a class="text-link" href="posts.html" data-i18n-zh="全部文章" data-i18n-en="All Articles">全部文章</a>
       </div>
       <div class="post-grid" id="home-recent-posts" aria-live="polite"></div>
     </section>
 
     <section class="section shell split-section" aria-labelledby="category-title">
       <div class="section-heading tall">
-        <p class="eyebrow">Index</p>
-        <h2 id="category-title">内容分类</h2>
-        <p>按真实用途分，不把所有东西混成一锅。想看短想法、生活记录、工具经验或者资源说明，都有入口。</p>
+        <p class="eyebrow" data-i18n-zh="索引" data-i18n-en="Index">索引</p>
+        <h2 id="category-title" data-i18n-zh="内容分类" data-i18n-en="Content Index">内容分类</h2>
+        <p data-i18n-zh="按真实用途分，不把所有东西混成一锅。想看短想法、生活记录、工具经验或者资源说明，都有入口。" data-i18n-en="Grouped by real use, not mixed into one pile. Short thoughts, daily notes, tool experience, and resource notes each have a clear entry.">按真实用途分，不把所有东西混成一锅。想看短想法、生活记录、工具经验或者资源说明，都有入口。</p>
       </div>
       <div class="category-lanes" id="home-categories"></div>
     </section>
@@ -151,35 +279,35 @@
     <section class="section shop-preview" aria-labelledby="shop-title">
       <div class="shell">
         <div class="section-heading">
-          <p class="eyebrow">Digital Shelf</p>
-          <h2 id="shop-title">数字商品 / 工具脚本 / 教程资源</h2>
-          <a class="text-link" href="shop.html">商品页</a>
+          <p class="eyebrow" data-i18n-zh="数字货架" data-i18n-en="Digital Shelf">数字货架</p>
+          <h2 id="shop-title" data-i18n-zh="数字商品 / 工具脚本 / 教程资源" data-i18n-en="Digital Goods / Tool Scripts / Tutorials">数字商品 / 工具脚本 / 教程资源</h2>
+          <a class="text-link" href="shop.html" data-i18n-zh="商品页" data-i18n-en="Shop">商品页</a>
         </div>
         <div class="product-strip" id="home-products"></div>
-        <p class="compliance-note">合规声明：不售卖作弊、破解、盗号、侵权、绕过平台规则的工具；脚本只放在学习、效率、配置、个人自动化和合法场景里。</p>
+        <p class="compliance-note" data-i18n-zh="合规声明：不售卖作弊、破解、盗号、侵权、绕过平台规则的工具；脚本只放在学习、效率、配置、个人自动化和合法场景里。" data-i18n-en="Boundary System: no cheating, cracking, account theft, infringement, or tools for bypassing platform rules. Scripts stay in learning, efficiency, configuration, personal automation, and lawful use.">合规声明：不售卖作弊、破解、盗号、侵权、绕过平台规则的工具；脚本只放在学习、效率、配置、个人自动化和合法场景里。</p>
       </div>
     </section>
 
     <section class="section shell" aria-labelledby="thought-title">
       <div class="section-heading">
-        <p class="eyebrow">Notes</p>
-        <h2 id="thought-title">几条保留意见</h2>
+        <p class="eyebrow" data-i18n-zh="笔记" data-i18n-en="Notes">笔记</p>
+        <h2 id="thought-title" data-i18n-zh="几条保留意见" data-i18n-en="A Few Reserved Notes">几条保留意见</h2>
       </div>
       <div class="thought-wall">
-        <blockquote>工具能把人抬高一点，也能把问题藏深一点。先问它省掉了什么，再问它留下了什么。</blockquote>
-        <blockquote>别急着把每件事做成项目。有些东西只是今天的记录，能留下来就够了。</blockquote>
-        <blockquote>判断不是口号，是愿意为一个选择承担后续的麻烦。</blockquote>
-        <blockquote>能公开写清楚边界的东西，才适合拿出来卖。</blockquote>
+        <blockquote data-i18n-zh="工具能把人抬高一点，也能把问题藏深一点。先问它省掉了什么，再问它留下了什么。" data-i18n-en="A tool can lift a person a little, and it can hide a problem deeper. Ask what it removed, then ask what it left behind.">工具能把人抬高一点，也能把问题藏深一点。先问它省掉了什么，再问它留下了什么。</blockquote>
+        <blockquote data-i18n-zh="别急着把每件事做成项目。有些东西只是今天的记录，能留下来就够了。" data-i18n-en="Do not rush to turn everything into a project. Some things are just today's record, and keeping them is enough.">别急着把每件事做成项目。有些东西只是今天的记录，能留下来就够了。</blockquote>
+        <blockquote data-i18n-zh="判断不是口号，是愿意为一个选择承担后续的麻烦。" data-i18n-en="Judgment is not a slogan. It means accepting the trouble that follows a choice.">判断不是口号，是愿意为一个选择承担后续的麻烦。</blockquote>
+        <blockquote data-i18n-zh="能公开写清楚边界的东西，才适合拿出来卖。" data-i18n-en="Only things with public, clear boundaries belong on the shelf.">能公开写清楚边界的东西，才适合拿出来卖。</blockquote>
       </div>
     </section>
 
     <section class="section shell about-band" aria-labelledby="about-title">
       <div>
-        <p class="eyebrow">About</p>
-        <h2 id="about-title">这个站点先写人，再写功能。</h2>
+        <p class="eyebrow" data-i18n-zh="关于" data-i18n-en="About">关于</p>
+        <h2 id="about-title" data-i18n-zh="这个站点先写人，再写功能。" data-i18n-en="This site writes the person first, then the functions.">这个站点先写人，再写功能。</h2>
       </div>
-      <p>我会写一些普通日子里的细节，也会记工具、脚本、网站和效率方法。不是每篇都要有结论，有时只是把试错过程留一份证据。能交付的资源会放到商品页，不能卖的边界会提前写出来。</p>
-      <a class="btn ghost" href="about.html">关于我</a>
+      <p data-i18n-zh="我会写一些普通日子里的细节，也会记工具、脚本、网站和效率方法。不是每篇都要有结论，有时只是把试错过程留一份证据。能交付的资源会放到商品页，不能卖的边界会提前写出来。" data-i18n-en="I write small details from ordinary days, and I also keep notes on tools, scripts, websites, and workflows. Not every post needs a conclusion; sometimes the trial and error is the evidence. Deliverable resources go to the shelf, and the boundaries are written first.">我会写一些普通日子里的细节，也会记工具、脚本、网站和效率方法。不是每篇都要有结论，有时只是把试错过程留一份证据。能交付的资源会放到商品页，不能卖的边界会提前写出来。</p>
+      <a class="btn ghost" href="about.html" data-i18n-zh="关于我" data-i18n-en="About Me">关于我</a>
     </section>
   </main>
 
@@ -187,5 +315,6 @@
   <script src="data/posts.js" defer></script>
   <script src="data/products.js" defer></script>
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/executive-cruise.js" defer></script>
 </body>
 </html>

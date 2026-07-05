@@ -7,23 +7,101 @@
   const page = body.dataset.page || 'home';
 
   const navItems = [
-    ['首页', 'index.html', 'home'],
-    ['随笔', 'posts.html?category=%E9%9A%8F%E7%AC%94', 'posts'],
-    ['日常', 'posts.html?category=%E6%97%A5%E5%B8%B8', 'posts'],
-    ['经验', 'posts.html?category=%E7%BB%8F%E9%AA%8C', 'posts'],
-    ['思想', 'posts.html?category=%E6%80%9D%E6%83%B3', 'posts'],
-    ['商品', 'shop.html', 'shop'],
-    ['关于', 'about.html', 'about'],
-    ['搜索', 'search.html', 'search']
+    { zh: '首页', en: 'Home', href: 'index.html', key: 'home' },
+    { zh: '随笔', en: 'Essays', href: 'posts.html?category=%E9%9A%8F%E7%AC%94', key: 'posts' },
+    { zh: '日常', en: 'Daily', href: 'posts.html?category=%E6%97%A5%E5%B8%B8', key: 'posts' },
+    { zh: '经验', en: 'Notes', href: 'posts.html?category=%E7%BB%8F%E9%AA%8C', key: 'posts' },
+    { zh: '思想', en: 'Thought', href: 'posts.html?category=%E6%80%9D%E6%83%B3', key: 'posts' },
+    { zh: '商品', en: 'Shelf', href: 'shop.html', key: 'shop' },
+    { zh: '关于', en: 'About', href: 'about.html', key: 'about' },
+    { zh: '搜索', en: 'Search', href: 'search.html', key: 'search' }
   ];
 
   const categories = [
-    { name: '随笔', desc: '个人观察、情绪、思想碎片。', href: 'posts.html?category=%E9%9A%8F%E7%AC%94' },
-    { name: '日常', desc: '生活记录、折腾记录、普通但真实的事。', href: 'posts.html?category=%E6%97%A5%E5%B8%B8' },
-    { name: '经验', desc: '学习、工具、博客搭建、AI 使用、效率方法。', href: 'posts.html?category=%E7%BB%8F%E9%AA%8C' },
-    { name: '思想', desc: '个人理念、判断、长期思考。', href: 'posts.html?category=%E6%80%9D%E6%83%B3' },
-    { name: '商品', desc: '游戏脚本、合作类、安全资源、预测、其他。', href: 'shop.html' }
+    { name: '随笔', en: 'Essays', desc: '个人观察、情绪、思想碎片。', enDesc: 'Personal observations, moods, and sharp fragments.', href: 'posts.html?category=%E9%9A%8F%E7%AC%94' },
+    { name: '日常', en: 'Daily', desc: '生活记录、折腾记录、普通但真实的事。', enDesc: 'Ordinary days, small repairs, and things worth keeping.', href: 'posts.html?category=%E6%97%A5%E5%B8%B8' },
+    { name: '经验', en: 'Notes', desc: '学习、工具、博客搭建、AI 使用、效率方法。', enDesc: 'Learning notes, tools, site work, AI use, and workflow habits.', href: 'posts.html?category=%E7%BB%8F%E9%AA%8C' },
+    { name: '思想', en: 'Thought', desc: '个人理念、判断、长期思考。', enDesc: 'Judgment, principles, and longer-running thinking.', href: 'posts.html?category=%E6%80%9D%E6%83%B3' },
+    { name: '商品', en: 'Shelf', desc: '游戏脚本、合作类、安全资源、预测、其他。', enDesc: 'Scripts, consulting, safe resources, readings, and other shelf items.', href: 'shop.html' }
   ];
+
+  const postCopyEn = {
+    'restart-the-blog': {
+      title: 'The Day I Rebuilt the Blog',
+      category: 'Daily',
+      readTime: '4 min',
+      tags: ['Blog', 'Record', 'Static Site'],
+      summary: 'Starting from one placeholder line, I turned the site into something that can hold notes for a long time.'
+    },
+    'one-button-afternoon': {
+      title: 'An Afternoon Spent on One Button',
+      category: 'Essay',
+      readTime: '3 min',
+      tags: ['Interface', 'Patience', 'Details'],
+      summary: 'Button states, focus, touch size, and dark mode decide whether a page feels finished or rough.'
+    },
+    'script-boundaries': {
+      title: 'My Boundaries Around Scripts',
+      category: 'Thought',
+      readTime: '5 min',
+      tags: ['Scripts', 'Compliance', 'Judgment'],
+      summary: 'Scripts can save repetitive labor, but they cannot be used to steal, crack, cheat, or push risk onto others.'
+    },
+    'tool-list-for-myself': {
+      title: 'A Short List for the Tools I Actually Use',
+      category: 'Notes',
+      readTime: '6 min',
+      tags: ['Workflow', 'Tools', 'List'],
+      summary: 'A useful tool list explains when to use something and when to leave it alone.'
+    },
+    'yi-page-at-night': {
+      title: 'Notes From Building a Zhouyi Page at Night',
+      category: 'Essay',
+      readTime: '4 min',
+      tags: ['Zhouyi', 'Reading', 'Boundary'],
+      summary: 'For prediction-related content, the limits need to be written before the atmosphere.'
+    },
+    'shop-without-auto-payment': {
+      title: 'Why the Shop Does Not Need Auto Payment Yet',
+      category: 'Shelf Note',
+      readTime: '5 min',
+      tags: ['Shop', 'Payment', 'Delivery'],
+      summary: 'A static site can show products, but it should not hide real payment keys or pretend to be a backend.'
+    }
+  };
+
+  const productCopyEn = {
+    'automation-template-pack': {
+      name: 'Compliant Automation Script Pack',
+      kind: 'Scripts',
+      line: 'Clean templates for local file handling, text cleanup, batch renaming, and personal automation.',
+      fit: 'For people who organize materials often and want a safer starting point for scripts.',
+      includes: ['PowerShell / JavaScript base templates', 'Common task examples', 'Boundary notes', 'Editable config files'],
+      status: 'Consulting',
+      price: 'TBD',
+      method: 'Contact'
+    },
+    'static-blog-starter': {
+      name: 'Personal Static Blog Starter',
+      kind: 'Templates',
+      line: 'A pure HTML, CSS, and JavaScript starter that can be hosted directly on GitHub Pages.',
+      fit: 'For people who want a light blog without a backend or build pipeline.',
+      includes: ['Home and article pages', 'Theme switching', 'Frontend search', 'SEO files', 'Deploy notes'],
+      status: 'In progress',
+      price: 'Reserved',
+      method: 'Ask status'
+    },
+    'yi-reading': {
+      name: 'Zhouyi Reading',
+      kind: 'Consulting',
+      line: 'A record-style reading around a concrete question, with limits stated clearly.',
+      fit: 'For people who want another angle while still making their own decisions.',
+      includes: ['Question framing', 'Reading record', 'Interpretation text', 'Risk note'],
+      status: 'Consulting',
+      price: 'Per request',
+      method: 'Contact'
+    }
+  };
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -49,15 +127,66 @@
     return new URLSearchParams(window.location.search).get(name);
   }
 
+  function currentLang() {
+    return document.documentElement.dataset.lang === 'en' ? 'en' : 'zh';
+  }
+
+  function langValue(zh, en) {
+    return currentLang() === 'en' ? en : zh;
+  }
+
+  function applyTranslations(root = document) {
+    const lang = currentLang();
+    document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+    $$('[data-i18n-zh]', root).forEach((node) => {
+      const value = lang === 'en' ? node.dataset.i18nEn : node.dataset.i18nZh;
+      if (value != null) node.textContent = value;
+    });
+    $$('[data-i18n-placeholder-zh]', root).forEach((node) => {
+      const value = lang === 'en' ? node.dataset.i18nPlaceholderEn : node.dataset.i18nPlaceholderZh;
+      if (value != null) node.setAttribute('placeholder', value);
+    });
+    $$('[data-i18n-aria-zh]', root).forEach((node) => {
+      const value = lang === 'en' ? node.dataset.i18nAriaEn : node.dataset.i18nAriaZh;
+      if (value != null) node.setAttribute('aria-label', value);
+    });
+    $$('[data-i18n-title-zh]', root).forEach((node) => {
+      const value = lang === 'en' ? node.dataset.i18nTitleEn : node.dataset.i18nTitleZh;
+      if (value != null) node.setAttribute('title', value);
+    });
+    const languageButton = $('.language-toggle');
+    if (languageButton) {
+      languageButton.textContent = lang === 'en' ? 'Chinese' : '英文';
+      languageButton.setAttribute('aria-label', lang === 'en' ? 'Switch to Chinese' : '切换到英文');
+      languageButton.setAttribute('title', lang === 'en' ? 'Switch to Chinese' : '切换到英文');
+    }
+  }
+
+  window.applySiteTranslations = applyTranslations;
+
   function postUrl(post) {
     return `post.html?slug=${encodeURIComponent(post.slug)}`;
+  }
+
+  function viewPost(post) {
+    return currentLang() === 'en' && postCopyEn[post.slug]
+      ? { ...post, ...postCopyEn[post.slug] }
+      : post;
+  }
+
+  function viewProduct(product) {
+    return currentLang() === 'en' && productCopyEn[product.slug]
+      ? { ...product, ...productCopyEn[product.slug] }
+      : product;
   }
 
   function renderHeader() {
     const mount = $('[data-site-header]');
     if (!mount) return;
     const currentCategory = getParam('category');
-    const nav = navItems.map(([label, href, key]) => {
+    const lang = currentLang();
+    const nav = navItems.map(({ zh, en, href, key }) => {
+      const label = lang === 'en' ? en : zh;
       const hrefQuery = href.includes('?') ? href.split('?')[1] : '';
       const hrefCategory = hrefQuery ? new URLSearchParams(hrefQuery).get('category') : null;
       const active = hrefCategory
@@ -68,19 +197,20 @@
 
     mount.innerHTML = `
       <header class="site-header">
-        <a class="brand" href="index.html" aria-label="重生日记首页">
-          <span class="brand-mark">重</span>
-          <span class="brand-text">重生日记</span>
+        <a class="brand" href="index.html" aria-label="${langValue('重生日记首页', 'Chongsheng Journal Home')}">
+          <span class="brand-mark">${lang === 'en' ? 'CS' : '重'}</span>
+          <span class="brand-text">${langValue('重生日记', 'Chongsheng Journal')}</span>
         </a>
-        <nav class="desktop-nav" aria-label="主导航">${nav}</nav>
+        <nav class="desktop-nav" aria-label="${langValue('主导航', 'Primary navigation')}">${nav}</nav>
         <div class="nav-actions">
-          <a class="icon-btn search-btn" href="search.html" aria-label="搜索" title="搜索"><span aria-hidden="true">⌕</span></a>
-          <button class="icon-btn theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题"><span aria-hidden="true"></span></button>
-          <button class="icon-btn menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false"><span aria-hidden="true">☰</span></button>
+          <a class="icon-btn search-btn" href="search.html" aria-label="${langValue('搜索', 'Search')}" title="${langValue('搜索', 'Search')}"><span aria-hidden="true">⌕</span></a>
+          <button class="icon-btn language-toggle" type="button" aria-label="${langValue('切换到英文', 'Switch to Chinese')}" title="${langValue('切换到英文', 'Switch to Chinese')}">${lang === 'en' ? 'Chinese' : '英文'}</button>
+          <button class="icon-btn theme-toggle" type="button" aria-label="${langValue('切换明暗主题', 'Toggle theme')}" title="${langValue('切换明暗主题', 'Toggle theme')}"><span aria-hidden="true"></span></button>
+          <button class="icon-btn menu-toggle" type="button" aria-label="${langValue('打开菜单', 'Open menu')}" aria-expanded="false"><span aria-hidden="true">☰</span></button>
         </div>
       </header>
       <div class="mobile-drawer" hidden>
-        <nav aria-label="移动端导航">${nav}</nav>
+        <nav aria-label="${langValue('移动端导航', 'Mobile navigation')}">${nav}</nav>
       </div>
     `;
   }
@@ -92,15 +222,15 @@
       <footer class="site-footer">
         <div class="footer-inner">
           <div>
-            <strong>重生日记</strong>
-            <p>日常、随笔、工具和合规数字资源。© 2026 Chongsheng180000.</p>
+            <strong>${langValue('重生日记', 'Chongsheng Journal')}</strong>
+            <p>${langValue('日常、随笔、工具和合规数字资源。', 'Daily notes, essays, tools, and compliant digital resources.')}© 2026 Chongsheng180000.</p>
           </div>
-          <nav aria-label="页脚链接">
-            <a href="rss.xml">RSS</a>
-            <a href="https://github.com/Chongsheng180000" rel="noopener">GitHub</a>
-            <a href="contact.html">联系</a>
-            <a href="map.html">站点地图</a>
-            <a href="privacy.html">隐私说明</a>
+          <nav aria-label="${langValue('页脚链接', 'Footer links')}">
+            <a href="rss.xml">${langValue('订阅', 'RSS')}</a>
+            <a href="https://github.com/Chongsheng180000" rel="noopener">${langValue('代码主页', 'GitHub')}</a>
+            <a href="contact.html">${langValue('联系', 'Contact')}</a>
+            <a href="map.html">${langValue('站点地图', 'Sitemap')}</a>
+            <a href="privacy.html">${langValue('隐私说明', 'Privacy')}</a>
           </nav>
         </div>
       </footer>
@@ -110,11 +240,14 @@
   function initTheme() {
     const root = document.documentElement;
     const button = $('.theme-toggle');
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
     const sync = () => {
       const theme = root.dataset.theme || 'light';
+      if (themeMeta) themeMeta.content = theme === 'dark' ? '#050608' : '#ead3b3';
       if (button) {
         button.querySelector('span').textContent = theme === 'dark' ? '☀' : '◐';
-        button.setAttribute('aria-label', theme === 'dark' ? '切换到明亮主题' : '切换到暗色主题');
+        button.setAttribute('aria-label', theme === 'dark' ? langValue('切换到白昼主题', 'Switch to daylight mode') : langValue('切换到夜间主题', 'Switch to night mode'));
+        button.setAttribute('title', theme === 'dark' ? langValue('切换到白昼主题', 'Switch to daylight mode') : langValue('切换到夜间主题', 'Switch to night mode'));
       }
     };
     sync();
@@ -128,6 +261,31 @@
       );
       sync();
     });
+  }
+
+  function initLanguage() {
+    const root = document.documentElement;
+    const sync = () => {
+      applyTranslations();
+      window.dispatchEvent(new CustomEvent('cs:languagechange', { detail: { lang: currentLang() } }));
+    };
+    const handleToggle = () => {
+      const next = currentLang() === 'en' ? 'zh' : 'en';
+      root.dataset.lang = next;
+      root.lang = next === 'en' ? 'en' : 'zh-CN';
+      localStorage.setItem('cs-lang', next);
+      renderHeader();
+      renderFooter();
+      initTheme();
+      initMobileNav();
+      if (page === 'home') renderHome();
+      if (page === 'shop') renderShopPage();
+      bind();
+      sync();
+    };
+    const bind = () => $('.language-toggle')?.addEventListener('click', handleToggle);
+    bind();
+    sync();
   }
 
   function initMobileNav() {
@@ -184,17 +342,18 @@
   }
 
   function renderPostCard(post, compact = false) {
+    const item = viewPost(post);
     return `
       <article class="post-card ${compact ? 'compact' : ''}">
-        <a class="post-card-link" href="${postUrl(post)}" aria-label="${escapeHtml(post.title)}"></a>
+        <a class="post-card-link" href="${postUrl(post)}" aria-label="${escapeHtml(item.title)}"></a>
         <div class="post-meta">
-          <span>${escapeHtml(post.category)}</span>
+          <span>${escapeHtml(item.category)}</span>
           <time datetime="${post.date}">${formatDate(post.date)}</time>
-          <span>${escapeHtml(post.readTime)}</span>
+          <span>${escapeHtml(item.readTime)}</span>
         </div>
-        <h3>${escapeHtml(post.title)}</h3>
-        <p>${escapeHtml(post.summary)}</p>
-        <div class="tag-row">${post.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <div class="tag-row">${item.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
       </article>
     `;
   }
@@ -216,11 +375,13 @@
         const count = item.name === '商品'
           ? products.length
           : posts.filter((post) => post.category === item.name).length;
+        const label = currentLang() === 'en' ? item.en : item.name;
+        const desc = currentLang() === 'en' ? item.enDesc : item.desc;
         return `
           <a class="category-lane" href="${item.href}">
-            <span>${item.name}</span>
+            <span>${escapeHtml(label)}</span>
             <strong>${count}</strong>
-            <p>${item.desc}</p>
+            <p>${escapeHtml(desc)}</p>
           </a>
         `;
       }).join('');
@@ -269,7 +430,7 @@
       let result = posts.filter((post) => {
         const categoryOk = state.category === '全部' || post.category === state.category;
         const tagOk = state.tag === '全部' || post.tags.includes(state.tag);
-        const haystack = [post.title, post.summary, post.category, ...post.tags].join(' ').toLowerCase();
+        const haystack = [post.title, post.summary, post.category, post.date, ...post.tags].join(' ').toLowerCase();
         return categoryOk && tagOk && (!query || haystack.includes(query));
       });
       result.sort((a, b) => {
@@ -366,20 +527,21 @@
   }
 
   function renderProductCard(product) {
+    const item = viewProduct(product);
     return `
-      <article class="product-card" data-kind="${escapeHtml(product.kind)}">
+      <article class="product-card" data-kind="${escapeHtml(item.kind)}">
         <div class="product-top">
-          <span>${escapeHtml(product.kind)}</span>
-          <em>${escapeHtml(product.status)}</em>
+          <span>${escapeHtml(item.kind)}</span>
+          <em>${escapeHtml(item.status)}</em>
         </div>
-        <h3>${escapeHtml(product.name)}</h3>
-        <p>${escapeHtml(product.line)}</p>
+        <h3>${escapeHtml(item.name)}</h3>
+        <p>${escapeHtml(item.line)}</p>
         <dl>
-          <div><dt>适合谁</dt><dd>${escapeHtml(product.fit)}</dd></div>
-          <div><dt>价格</dt><dd>${escapeHtml(product.price)}</dd></div>
+          <div><dt>${langValue('适合谁', 'For')}</dt><dd>${escapeHtml(item.fit)}</dd></div>
+          <div><dt>${langValue('价格', 'Price')}</dt><dd>${escapeHtml(item.price)}</dd></div>
         </dl>
-        <ul>${product.includes.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
-        <a class="btn small" href="contact.html?product=${encodeURIComponent(product.slug)}">${escapeHtml(product.method)}</a>
+        <ul>${item.includes.map((entry) => `<li>${escapeHtml(entry)}</li>`).join('')}</ul>
+        <a class="btn small" href="contact.html?product=${encodeURIComponent(product.slug)}">${escapeHtml(item.method)}</a>
       </article>
     `;
   }
@@ -453,6 +615,7 @@
   renderPostsPage();
   renderPostDetail();
   renderShopPage();
+  initLanguage();
   initCockpitMotion();
   initCursor();
   initReveal();

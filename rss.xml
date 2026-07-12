@@ -5,7 +5,7 @@
     <link>https://chongsheng180000.github.io/</link>
     <description>日常、随笔、经验、工具和合规数字资源。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 04 Jul 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 12 Jul 2026 00:00:00 +0800</lastBuildDate>
     <item>
       <title>把博客重新搭起来的那天</title>
       <link>https://chongsheng180000.github.io/post.html?slug=restart-the-blog</link>
@@ -14,11 +14,39 @@
       <description>从一行占位文字开始，把站点改成能长期写下去的样子。</description>
     </item>
     <item>
+      <title>一下午只修了一个按钮</title>
+      <link>https://chongsheng180000.github.io/post.html?slug=one-button-afternoon</link>
+      <guid>https://chongsheng180000.github.io/post.html?slug=one-button-afternoon</guid>
+      <pubDate>Fri, 03 Jul 2026 00:00:00 +0800</pubDate>
+      <description>按钮状态、焦点、触屏尺寸、暗色主题，任何一个小地方没收住，都会让页面显得很粗糙。</description>
+    </item>
+    <item>
       <title>我对脚本这件事的边界</title>
       <link>https://chongsheng180000.github.io/post.html?slug=script-boundaries</link>
       <guid>https://chongsheng180000.github.io/post.html?slug=script-boundaries</guid>
       <pubDate>Thu, 02 Jul 2026 00:00:00 +0800</pubDate>
       <description>脚本可以帮人少做重复劳动，但不能拿来偷东西、破坏规则或者把风险丢给别人。</description>
+    </item>
+    <item>
+      <title>给常用工具留一张清单</title>
+      <link>https://chongsheng180000.github.io/post.html?slug=tool-list-for-myself</link>
+      <guid>https://chongsheng180000.github.io/post.html?slug=tool-list-for-myself</guid>
+      <pubDate>Tue, 30 Jun 2026 00:00:00 +0800</pubDate>
+      <description>工具越多越容易乱。真正有用的清单不是收藏夹，而是能解释什么时候用、什么时候不用。</description>
+    </item>
+    <item>
+      <title>夜里写周易页面时想到的</title>
+      <link>https://chongsheng180000.github.io/post.html?slug=yi-page-at-night</link>
+      <guid>https://chongsheng180000.github.io/post.html?slug=yi-page-at-night</guid>
+      <pubDate>Fri, 26 Jun 2026 00:00:00 +0800</pubDate>
+      <description>预测类内容容易被说得太满。页面上要写方法，也要写限制，别把不确定包装成确定。</description>
+    </item>
+    <item>
+      <title>商品页先不急着接支付</title>
+      <link>https://chongsheng180000.github.io/post.html?slug=shop-without-auto-payment</link>
+      <guid>https://chongsheng180000.github.io/post.html?slug=shop-without-auto-payment</guid>
+      <pubDate>Sun, 21 Jun 2026 00:00:00 +0800</pubDate>
+      <description>静态站能展示商品，但不适合直接塞支付密钥。先把说明、咨询、交付和售后规则写明白。</description>
     </item>
   </channel>
 </rss>

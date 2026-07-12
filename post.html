@@ -17,6 +17,9 @@
       const saved = localStorage.getItem('cs-theme');
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      const lang = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">

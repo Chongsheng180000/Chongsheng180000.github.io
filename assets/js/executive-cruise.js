@@ -94,7 +94,7 @@
     }
   ];
 
-  const primaryDriveModeOrder = ['read', 'build', 'archive', 'shelf'];
+  const primaryDriveModeOrder = ['read', 'build', 'shelf', 'archive'];
 
   const starlightModes = [
     { id: 'on', zh: '开启', en: 'On' },
@@ -456,29 +456,13 @@
     });
   }
 
-  function render() {
-    const theme = currentTheme();
-    const mode = currentDriveMode();
-    const starlight = currentStarlight();
-    root.dataset.cruiseMode = state.cruiseMode;
-    root.dataset.driveMode = state.driveMode;
-    root.dataset.ambientTheme = theme.id;
-    root.dataset.starlightMode = state.starlightMode;
-    root.dataset.category = categories[state.selectedCategory].toLowerCase();
-    root.classList.toggle('is-manual-cruise', state.cruiseMode === 'manual');
-    root.classList.toggle('is-paused-cruise', state.cruiseMode === 'paused');
-    root.classList.toggle('is-night-mode', state.driveMode === 'night');
-    root.classList.toggle('is-minimal-console', state.minimal);
-    ambientThemes.forEach(({ id }) => root.classList.remove(`ambient-theme-${id}`));
-    root.classList.add(`ambient-theme-${theme.id}`);
-
+  function renderMotion() {
     const duration = state.cruiseMode === 'paused' || reduceMotion
       ? 120
       : clamp(18 / state.speed, 6, 42);
     const lightDuration = state.cruiseMode === 'paused' || reduceMotion
       ? 160
       : clamp(12 / state.speed, 4, 28);
-
     const engineLoad = state.cruiseMode === 'paused'
       ? 0.08
       : clamp((state.speed - 0.35) / 1.85, 0.08, 1);
@@ -498,6 +482,25 @@
     root.style.setProperty('--wheel-shadow-offset', `${steeringDrift * 0.08}px`);
     root.style.setProperty('--cruise-duration', `${duration}s`);
     root.style.setProperty('--light-duration', `${lightDuration}s`);
+  }
+
+  function render() {
+    const theme = currentTheme();
+    const mode = currentDriveMode();
+    const starlight = currentStarlight();
+    root.dataset.cruiseMode = state.cruiseMode;
+    root.dataset.driveMode = state.driveMode;
+    root.dataset.ambientTheme = theme.id;
+    root.dataset.starlightMode = state.starlightMode;
+    root.dataset.category = categories[state.selectedCategory].toLowerCase();
+    root.classList.toggle('is-manual-cruise', state.cruiseMode === 'manual');
+    root.classList.toggle('is-paused-cruise', state.cruiseMode === 'paused');
+    root.classList.toggle('is-night-mode', state.driveMode === 'night');
+    root.classList.toggle('is-minimal-console', state.minimal);
+    ambientThemes.forEach(({ id }) => root.classList.remove(`ambient-theme-${id}`));
+    root.classList.add(`ambient-theme-${theme.id}`);
+
+    renderMotion();
 
     setText('[data-mileage-readout]', currentLang() === 'en' ? `${postCount} posts` : `${postCount} 篇`);
     setText('[data-signal-readout]', currentLang() === 'en' ? 'RSS clear' : '订阅正常');
@@ -718,7 +721,7 @@
           state.steeringAngle = 0;
           state.steeringVelocity = 0;
         }
-        render();
+        renderMotion();
       }
       window.requestAnimationFrame(tick);
     };

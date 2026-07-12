@@ -17,6 +17,9 @@
       const saved = localStorage.getItem('cs-theme');
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      const lang = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">
@@ -29,23 +32,38 @@
 
   <main id="main" class="page-main">
     <section class="page-hero shell compact about-hero">
-      <p class="eyebrow">About</p>
-      <h1>我不太想把自己写得很圆满。</h1>
-      <p>会写东西，会做网站，会折腾脚本和工具。很多东西还在试，但能跑通的经验会留下来。</p>
+      <p class="eyebrow" data-i18n-zh="个人档案" data-i18n-en="Owner Profile">个人档案</p>
+      <h1 data-i18n-zh="我不太想把自己写得很圆满。" data-i18n-en="I do not need to make the profile look complete.">我不太想把自己写得很圆满。</h1>
+      <p data-i18n-zh="会写东西，会做网站，会折腾脚本和工具。很多东西还在试，但能跑通的经验会留下来。" data-i18n-en="I write, build websites, and work on scripts and tools. A lot is still being tested; the parts that work are kept here.">会写东西，会做网站，会折腾脚本和工具。很多东西还在试，但能跑通的经验会留下来。</p>
     </section>
 
-    <section class="shell prose-page owner-profile-source">
-      <h2>这个站点放什么</h2>
-      <p>日常、随笔、经验、工具记录，还有一些可以交付的数字资源。文章不一定都长，也不一定每篇都要讲大道理。能说明白的就写清楚，说明不白的先放一放。</p>
+    <section class="shell owner-profile-grid" aria-label="个人档案">
+      <aside class="owner-profile-panel">
+        <div class="owner-profile-badge">
+          <span data-i18n-zh="档案状态" data-i18n-en="Profile Status">档案状态</span>
+          <strong data-i18n-zh="重生日常系统" data-i18n-en="CHONGSHENG DAILY OS">重生日常系统</strong>
+        </div>
+        <ul class="profile-status-list">
+          <li><span data-i18n-zh="写作" data-i18n-en="Writing">写作</span><em data-i18n-zh="进行中" data-i18n-en="Active">进行中</em></li>
+          <li><span data-i18n-zh="工具" data-i18n-en="Build">工具</span><em data-i18n-zh="进行中" data-i18n-en="Active">进行中</em></li>
+          <li><span data-i18n-zh="货架" data-i18n-en="Shelf">货架</span><em data-i18n-zh="有限开放" data-i18n-en="Limited">有限开放</em></li>
+          <li><span data-i18n-zh="边界" data-i18n-en="Boundary">边界</span><em data-i18n-zh="清晰" data-i18n-en="Clear">清晰</em></li>
+        </ul>
+        <a class="profile-contact-link" href="contact.html" data-i18n-zh="打开联系控制台" data-i18n-en="Open Contact Console">打开联系控制台</a>
+      </aside>
+      <div class="owner-profile-copy prose-page">
+        <h2 data-i18n-zh="这个站点放什么" data-i18n-en="What belongs here">这个站点放什么</h2>
+        <p data-i18n-zh="日常、随笔、经验、工具记录，还有一些可以交付的数字资源。文章不一定都长，也不一定每篇都要讲大道理。能说明白的就写清楚，说明不白的先放一放。" data-i18n-en="Daily notes, essays, experience, tool records, and a few deliverable digital resources. Articles do not need to be long or carry a grand conclusion. If something can be explained, it gets written clearly; otherwise it waits.">日常、随笔、经验、工具记录，还有一些可以交付的数字资源。文章不一定都长，也不一定每篇都要讲大道理。能说明白的就写清楚，说明不白的先放一放。</p>
 
-      <h2>我在意什么</h2>
-      <p>我更在意一件事是否真的能用：一个页面能不能读，一个脚本有没有边界，一个商品是不是说得清楚。漂亮很重要，但漂亮不能替代内容。</p>
+        <h2 data-i18n-zh="我在意什么" data-i18n-en="What I care about">我在意什么</h2>
+        <p data-i18n-zh="我更在意一件事是否真的能用：一个页面能不能读，一个脚本有没有边界，一个商品是不是说得清楚。漂亮很重要，但漂亮不能替代内容。" data-i18n-en="I care whether something actually works: whether a page can be read, a script has boundaries, and a product can be explained. Appearance matters, but it cannot replace substance.">我更在意一件事是否真的能用：一个页面能不能读，一个脚本有没有边界，一个商品是不是说得清楚。漂亮很重要，但漂亮不能替代内容。</p>
 
-      <h2>关于商品</h2>
-      <p>商品页里的脚本、模板、教程都先走咨询购买。不会在前端塞支付密钥，也不会做自动发货。涉及平台规则、账号安全、版权边界的内容，一律不做灰色处理。</p>
+        <h2 data-i18n-zh="关于商品" data-i18n-en="About the shelf">关于商品</h2>
+        <p data-i18n-zh="商品页里的脚本、模板、教程都先走咨询购买。不会在前端塞支付密钥，也不会做自动发货。涉及平台规则、账号安全、版权边界的内容，一律不做灰色处理。" data-i18n-en="Scripts, templates, and tutorials begin with a conversation. There are no payment secrets in the frontend and no automatic delivery. Platform rules, account safety, and copyright are handled without grey areas.">商品页里的脚本、模板、教程都先走咨询购买。不会在前端塞支付密钥，也不会做自动发货。涉及平台规则、账号安全、版权边界的内容，一律不做灰色处理。</p>
 
-      <h2>写作口味</h2>
-      <p>偏短，偏直接。偶尔冷一点。好处是不用把普通事包装成很大的东西；坏处是有些文章可能像备忘录。</p>
+        <h2 data-i18n-zh="写作口味" data-i18n-en="Writing preference">写作口味</h2>
+        <p data-i18n-zh="偏短，偏直接。偶尔冷一点。好处是不用把普通事包装成很大的东西；坏处是有些文章可能像备忘录。" data-i18n-en="Short and direct, sometimes a little cold. The advantage is that ordinary things do not need grand packaging; the drawback is that some entries may read like notes.">偏短，偏直接。偶尔冷一点。好处是不用把普通事包装成很大的东西；坏处是有些文章可能像备忘录。</p>
+      </div>
     </section>
   </main>
 

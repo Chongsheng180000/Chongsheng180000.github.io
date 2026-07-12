@@ -17,6 +17,9 @@
       const saved = localStorage.getItem('cs-theme');
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      const lang = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">
@@ -29,30 +32,30 @@
 
   <main id="main" class="page-main">
     <section class="page-hero shell compact">
-      <p class="eyebrow">Search</p>
-      <h1>找文章，也找商品。</h1>
-      <p>标题、摘要、标签、商品名都会匹配。搜索只在前端完成，不上传关键词。</p>
+      <p class="eyebrow" data-i18n-zh="导航输入" data-i18n-en="Navigation Input">导航输入</p>
+      <h1 data-i18n-zh="找文章，也找商品。" data-i18n-en="Search articles, tools, and shelf items.">找文章，也找商品。</h1>
+      <p data-i18n-zh="标题、摘要、标签和商品名都会匹配。搜索只在浏览器里完成，不上传关键词。" data-i18n-en="Titles, summaries, tags, and product names are matched in the browser. Search terms are not uploaded.">标题、摘要、标签和商品名都会匹配。搜索只在浏览器里完成，不上传关键词。</p>
     </section>
 
     <section class="shell search-page" aria-label="搜索">
-      <input id="global-search-input" class="search-input" type="search" placeholder="输入关键词">
+      <input id="global-search-input" class="search-input" type="search" placeholder="输入关键词" data-i18n-placeholder-zh="输入关键词" data-i18n-placeholder-en="Enter keywords">
       <div class="search-columns">
         <div>
           <div class="result-head">
-            <span>文章</span>
+            <span data-i18n-zh="文章" data-i18n-en="Articles">文章</span>
             <span id="search-post-count">0</span>
           </div>
           <div class="post-list compact-list" id="search-post-results"></div>
         </div>
         <div>
           <div class="result-head">
-            <span>商品</span>
+            <span data-i18n-zh="商品" data-i18n-en="Shelf">商品</span>
             <span id="search-product-count">0</span>
           </div>
           <div class="product-mini-list" id="search-product-results"></div>
         </div>
       </div>
-      <p class="empty-state" id="search-empty" hidden>没有匹配内容。这个站还小，可能只是还没写到。</p>
+      <p class="empty-state" id="search-empty" hidden data-i18n-zh="没有匹配内容。这个站还小，可能只是还没写到。" data-i18n-en="No match. The site is still small; the topic may simply not be here yet.">没有匹配内容。这个站还小，可能只是还没写到。</p>
     </section>
   </main>
 

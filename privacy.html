@@ -8,11 +8,18 @@
   <meta name="theme-color" content="#10110f">
   <link rel="canonical" href="https://chongsheng180000.github.io/privacy.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="隐私说明 | 重生日记">
+  <meta property="og:description" content="本站为纯静态页面，不主动收集个人信息，也不保存支付密钥或账号凭据。">
+  <meta property="og:url" content="https://chongsheng180000.github.io/privacy.html">
   <script>
     (() => {
       const saved = localStorage.getItem('cs-theme');
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      const lang = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">
@@ -25,17 +32,17 @@
 
   <main id="main" class="page-main">
     <section class="page-hero shell compact">
-      <p class="eyebrow">Privacy</p>
-      <h1>隐私说明</h1>
-      <p>这是一个纯静态站点。能少收集就不收集，能不接第三方脚本就不接。</p>
+      <p class="eyebrow" data-i18n-zh="边界系统" data-i18n-en="Boundary System">边界系统</p>
+      <h1 data-i18n-zh="隐私说明" data-i18n-en="Privacy">隐私说明</h1>
+      <p data-i18n-zh="这是一个纯静态站点。能少收集就不收集，能不接第三方脚本就不接。" data-i18n-en="This is a static site. It collects as little as possible and avoids unnecessary third-party scripts.">这是一个纯静态站点。能少收集就不收集，能不接第三方脚本就不接。</p>
     </section>
     <section class="shell prose-page narrow">
-      <h2>本地设置</h2>
-      <p>明暗主题会写入浏览器 localStorage，用来记住你的显示偏好。搜索关键词只在当前页面里匹配，不发送到服务器。</p>
-      <h2>联系信息</h2>
-      <p>如果你通过邮箱、GitHub Issues 或其他联系方式主动发来信息，我只会按沟通目的使用它。</p>
-      <h2>外部链接</h2>
-      <p>本站可能链接到 GitHub 或其他外部页面。离开本站后的隐私规则，以对方页面为准。</p>
+      <h2 data-i18n-zh="本地设置" data-i18n-en="Local settings">本地设置</h2>
+      <p data-i18n-zh="明暗主题、语言、氛围和阅读设置会写入浏览器 localStorage，用来记住显示偏好。搜索关键词只在当前页面里匹配，不发送到服务器。" data-i18n-en="Theme, language, ambient, and reading settings are stored in browser localStorage. Search terms are matched on the page and are not sent to a server.">明暗主题、语言、氛围和阅读设置会写入浏览器 localStorage，用来记住显示偏好。搜索关键词只在当前页面里匹配，不发送到服务器。</p>
+      <h2 data-i18n-zh="联系信息" data-i18n-en="Contact information">联系信息</h2>
+      <p data-i18n-zh="如果你通过邮箱、GitHub、QQ 或微信主动发来信息，只会按沟通目的使用它。" data-i18n-en="Information sent through email, GitHub, QQ, or WeChat is used only for the purpose of that conversation.">如果你通过邮箱、GitHub、QQ 或微信主动发来信息，只会按沟通目的使用它。</p>
+      <h2 data-i18n-zh="外部链接" data-i18n-en="External links">外部链接</h2>
+      <p data-i18n-zh="本站可能链接到 GitHub 或其他外部页面。离开本站后的隐私规则，以对方页面为准。" data-i18n-en="This site may link to GitHub or other external pages. Their privacy rules apply after you leave this site.">本站可能链接到 GitHub 或其他外部页面。离开本站后的隐私规则，以对方页面为准。</p>
     </section>
   </main>
 

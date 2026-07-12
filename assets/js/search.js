@@ -9,6 +9,7 @@
   const postCount = document.querySelector('#search-post-count');
   const productCount = document.querySelector('#search-product-count');
   const empty = document.querySelector('#search-empty');
+  const isEn = document.documentElement.dataset.lang === 'en';
 
   if (!input || !postMount || !productMount) return;
 
@@ -21,25 +22,43 @@
 
   const matches = (values, query) => values.join(' ').toLowerCase().includes(query);
 
+  const viewPost = (post) => isEn ? {
+    ...post,
+    title: post.titleEn || post.title,
+    category: post.categoryEn || post.category,
+    summary: post.summaryEn || post.summary,
+    tags: post.tagsEn || post.tags
+  } : post;
+
+  const viewProduct = (product) => isEn ? {
+    ...product,
+    name: product.nameEn || product.name,
+    kind: product.kindEn || product.kind,
+    line: product.lineEn || product.line,
+    status: product.statusEn || product.status
+  } : product;
+
   function renderPost(post) {
+    const item = viewPost(post);
     return `
       <article class="search-item">
         <a href="post.html?slug=${encodeURIComponent(post.slug)}">
-          <span>${escapeHtml(post.category)}</span>
-          <strong>${escapeHtml(post.title)}</strong>
-          <p>${escapeHtml(post.summary)}</p>
+          <span>${escapeHtml(item.category)}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.summary)}</p>
         </a>
       </article>
     `;
   }
 
   function renderProduct(product) {
+    const item = viewProduct(product);
     return `
       <article class="search-item product">
         <a href="contact.html?product=${encodeURIComponent(product.slug)}">
-          <span>${escapeHtml(product.kind)} · ${escapeHtml(product.status)}</span>
-          <strong>${escapeHtml(product.name)}</strong>
-          <p>${escapeHtml(product.line)}</p>
+          <span>${escapeHtml(item.kind)} · ${escapeHtml(item.status)}</span>
+          <strong>${escapeHtml(item.name)}</strong>
+          <p>${escapeHtml(item.line)}</p>
         </a>
       </article>
     `;
@@ -48,10 +67,16 @@
   function update() {
     const query = input.value.trim().toLowerCase();
     const postResults = query
-      ? posts.filter((post) => matches([post.title, post.summary, post.category, ...post.tags], query))
+      ? posts.filter((post) => {
+          const item = viewPost(post);
+          return matches([post.title, post.summary, post.category, ...post.tags, item.title, item.summary, item.category, ...item.tags], query);
+        })
       : posts.slice(0, 4);
     const productResults = query
-      ? products.filter((product) => matches([product.name, product.line, product.kind, product.status, product.fit], query))
+      ? products.filter((product) => {
+          const item = viewProduct(product);
+          return matches([product.name, product.line, product.kind, product.status, product.fit, item.name, item.line, item.kind, item.status], query);
+        })
       : products.slice(0, 4);
 
     postMount.innerHTML = postResults.map(renderPost).join('');

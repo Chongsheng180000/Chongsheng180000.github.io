@@ -5,6 +5,9 @@
   const products = window.BLOG_PRODUCTS || [];
   const body = document.body;
   const page = body.dataset.page || 'home';
+  const savedLanguage = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+  document.documentElement.dataset.lang = savedLanguage;
+  document.documentElement.lang = savedLanguage === 'en' ? 'en' : 'zh-CN';
 
   const navItems = [
     { zh: '首页', en: 'Home', href: 'index.html', key: 'home' },
@@ -24,6 +27,17 @@
     { name: '思想', en: 'Thought', desc: '个人理念、判断、长期思考。', enDesc: 'Judgment, principles, and longer-running thinking.', href: 'posts.html?category=%E6%80%9D%E6%83%B3' },
     { name: '商品', en: 'Shelf', desc: '游戏脚本、合作类、安全资源、预测、其他。', enDesc: 'Scripts, consulting, safe resources, readings, and other shelf items.', href: 'shop.html' }
   ];
+
+  const pageTitles = {
+    home: ['重生日记 | 日常、工具和一点判断', 'Chongsheng Journal | Notes, Tools, and Judgment'],
+    posts: ['文章 | 重生日记', 'Articles | Chongsheng Journal'],
+    shop: ['商品 | 重生日记', 'Digital Shelf | Chongsheng Journal'],
+    about: ['关于 | 重生日记', 'About | Chongsheng Journal'],
+    contact: ['联系 | 重生日记', 'Contact | Chongsheng Journal'],
+    search: ['搜索 | 重生日记', 'Search | Chongsheng Journal'],
+    map: ['站点地图 | 重生日记', 'Site Map | Chongsheng Journal'],
+    privacy: ['隐私说明 | 重生日记', 'Privacy | Chongsheng Journal']
+  };
 
   const postCopyEn = {
     'restart-the-blog': {
@@ -116,7 +130,7 @@
   }
 
   function formatDate(date) {
-    return new Intl.DateTimeFormat('zh-CN', {
+    return new Intl.DateTimeFormat(currentLang() === 'en' ? 'en-CA' : 'zh-CN', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit'
@@ -138,6 +152,9 @@
   function applyTranslations(root = document) {
     const lang = currentLang();
     document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+    if (pageTitles[page]) document.title = pageTitles[page][lang === 'en' ? 1 : 0];
+    const skipLink = $('.skip-link');
+    if (skipLink) skipLink.textContent = lang === 'en' ? 'Skip to content' : '跳到正文';
     $$('[data-i18n-zh]', root).forEach((node) => {
       const value = lang === 'en' ? node.dataset.i18nEn : node.dataset.i18nZh;
       if (value != null) node.textContent = value;
@@ -169,15 +186,35 @@
   }
 
   function viewPost(post) {
-    return currentLang() === 'en' && postCopyEn[post.slug]
-      ? { ...post, ...postCopyEn[post.slug] }
-      : post;
+    if (currentLang() !== 'en') return post;
+    const fallback = postCopyEn[post.slug] || {};
+    return {
+      ...post,
+      ...fallback,
+      title: post.titleEn || fallback.title || post.title,
+      category: post.categoryEn || fallback.category || post.category,
+      readTime: post.readTimeEn || fallback.readTime || post.readTime,
+      tags: post.tagsEn || fallback.tags || post.tags,
+      summary: post.summaryEn || fallback.summary || post.summary,
+      content: post.contentEn || post.content
+    };
   }
 
   function viewProduct(product) {
-    return currentLang() === 'en' && productCopyEn[product.slug]
-      ? { ...product, ...productCopyEn[product.slug] }
-      : product;
+    if (currentLang() !== 'en') return product;
+    const fallback = productCopyEn[product.slug] || {};
+    return {
+      ...product,
+      ...fallback,
+      name: product.nameEn || fallback.name || product.name,
+      kind: product.kindEn || fallback.kind || product.kind,
+      line: product.lineEn || fallback.line || product.line,
+      fit: product.fitEn || fallback.fit || product.fit,
+      includes: product.includesEn || fallback.includes || product.includes,
+      status: product.statusEn || fallback.status || product.status,
+      price: product.priceEn || fallback.price || product.price,
+      method: product.methodEn || fallback.method || product.method
+    };
   }
 
   function renderHeader() {
@@ -228,6 +265,7 @@
           <nav aria-label="${langValue('页脚链接', 'Footer links')}">
             <a href="rss.xml">${langValue('订阅', 'RSS')}</a>
             <a href="https://github.com/Chongsheng180000" rel="noopener">${langValue('代码主页', 'GitHub')}</a>
+            <a href="mailto:Chongsheng20000@gmail.com">${langValue('邮箱', 'Email')}</a>
             <a href="contact.html">${langValue('联系', 'Contact')}</a>
             <a href="map.html">${langValue('站点地图', 'Sitemap')}</a>
             <a href="privacy.html">${langValue('隐私说明', 'Privacy')}</a>
@@ -271,17 +309,11 @@
     };
     const handleToggle = () => {
       const next = currentLang() === 'en' ? 'zh' : 'en';
-      root.dataset.lang = next;
-      root.lang = next === 'en' ? 'en' : 'zh-CN';
       localStorage.setItem('cs-lang', next);
-      renderHeader();
-      renderFooter();
-      initTheme();
-      initMobileNav();
-      if (page === 'home') renderHome();
-      if (page === 'shop') renderShopPage();
-      bind();
-      sync();
+      document.documentElement.animate(
+        [{ opacity: 1 }, { opacity: 0.82 }],
+        { duration: 120, easing: 'ease-out' }
+      ).finished.finally(() => window.location.reload());
     };
     const bind = () => $('.language-toggle')?.addEventListener('click', handleToggle);
     bind();
@@ -393,11 +425,12 @@
     }
   }
 
-  function renderFilters(list, mount, activeValue, onSelect) {
+  function renderFilters(list, mount, activeValue, onSelect, labels = new Map()) {
     if (!mount) return;
     mount.innerHTML = list.map((value) => {
       const active = value === activeValue;
-      return `<button class="chip ${active ? 'active' : ''}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`;
+      const label = labels.get(value) || value;
+      return `<button class="chip ${active ? 'active' : ''}" type="button" data-value="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
     }).join('');
     $$('button', mount).forEach((button) => {
       button.addEventListener('click', () => onSelect(button.dataset.value));
@@ -417,6 +450,12 @@
 
     const tags = ['全部', ...new Set(posts.flatMap((post) => post.tags))];
     const cats = ['全部', ...new Set(posts.map((post) => post.category))];
+    const categoryLabels = new Map([['全部', langValue('全部', 'All')]]);
+    const tagLabels = new Map([['全部', langValue('全部', 'All')]]);
+    posts.forEach((post) => {
+      categoryLabels.set(post.category, currentLang() === 'en' ? post.categoryEn || post.category : post.category);
+      post.tags.forEach((tag, index) => tagLabels.set(tag, currentLang() === 'en' ? post.tagsEn?.[index] || tag : tag));
+    });
     const initialCategory = getParam('category') || '全部';
     const state = {
       category: cats.includes(initialCategory) ? initialCategory : '全部',
@@ -439,16 +478,16 @@
       });
 
       listMount.innerHTML = result.map((post) => renderPostCard(post, true)).join('');
-      if (countMount) countMount.textContent = `${result.length} 篇`;
+      if (countMount) countMount.textContent = currentLang() === 'en' ? `${result.length} routes` : `${result.length} 篇`;
       if (empty) empty.hidden = result.length !== 0;
       renderFilters(cats, categoryMount, state.category, (value) => {
         state.category = value;
         update();
-      });
+      }, categoryLabels);
       renderFilters(tags, tagMount, state.tag, (value) => {
         state.tag = value;
         update();
-      });
+      }, tagLabels);
     };
 
     searchInput?.addEventListener('input', () => {
@@ -476,23 +515,36 @@
       mount.innerHTML = `
         <div class="article-missing">
           <p class="eyebrow">404</p>
-          <h1>这篇文章还没放上来。</h1>
-          <p>链接可能写错了，或者文章被挪走了。</p>
-          <a class="btn ghost" href="posts.html">返回文章列表</a>
+          <h1>${langValue('这篇文章还没放上来。', 'This article is not available.')}</h1>
+          <p>${langValue('链接可能写错了，或者文章被挪走了。', 'The link may be incorrect, or the article has moved.')}</p>
+          <a class="btn ghost" href="posts.html">${langValue('返回文章列表', 'Back to reading')}</a>
         </div>
       `;
       return;
     }
 
-    const index = posts.findIndex((item) => item.slug === post.slug);
+    const item = viewPost(post);
+    const index = posts.findIndex((entry) => entry.slug === post.slug);
     const prev = posts[index + 1];
     const next = posts[index - 1];
-    document.title = `${post.title} | 重生日记`;
+    document.title = `${item.title} | ${langValue('重生日记', 'Chongsheng Journal')}`;
     const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) metaDescription.content = post.summary;
+    if (metaDescription) metaDescription.content = item.summary;
+    const canonicalUrl = `https://chongsheng180000.github.io/${postUrl(post)}`;
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = canonicalUrl;
+    const socialMeta = {
+      'og:title': document.title,
+      'og:description': item.summary,
+      'og:url': canonicalUrl
+    };
+    Object.entries(socialMeta).forEach(([property, content]) => {
+      const element = document.querySelector(`meta[property="${property}"]`);
+      if (element) element.content = content;
+    });
 
-    const toc = post.content.map((section) => `<a href="#${sectionId(section.heading)}">${escapeHtml(section.heading)}</a>`).join('');
-    const bodyHtml = post.content.map((section) => `
+    const toc = item.content.map((section) => `<a href="#${sectionId(section.heading)}">${escapeHtml(section.heading)}</a>`).join('');
+    const bodyHtml = item.content.map((section) => `
       <section id="${sectionId(section.heading)}">
         <h2>${escapeHtml(section.heading)}</h2>
         ${section.paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
@@ -501,27 +553,27 @@
     `).join('');
 
     mount.innerHTML = `
-      <a class="back-link" href="posts.html">← 返回文章列表</a>
+      <a class="back-link" href="posts.html">${langValue('← 返回文章列表', '← Back to archive')}</a>
       <header class="article-head">
         <div class="post-meta">
-          <span>${escapeHtml(post.category)}</span>
+          <span>${escapeHtml(item.category)}</span>
           <time datetime="${post.date}">${formatDate(post.date)}</time>
-          <span>${escapeHtml(post.readTime)}</span>
+          <span>${escapeHtml(item.readTime)}</span>
         </div>
-        <h1>${escapeHtml(post.title)}</h1>
-        <p>${escapeHtml(post.summary)}</p>
-        <div class="tag-row">${post.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
+        <h1>${escapeHtml(item.title)}</h1>
+        <p>${escapeHtml(item.summary)}</p>
+        <div class="tag-row">${item.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
       </header>
       <div class="article-layout">
-        <aside class="toc" aria-label="目录">
-          <strong>目录</strong>
-          ${toc || '<span>暂无</span>'}
+        <aside class="toc" aria-label="${langValue('目录', 'Table of contents')}">
+          <strong>${langValue('目录', 'Contents')}</strong>
+          ${toc || `<span>${langValue('暂无', 'None')}</span>`}
         </aside>
         <div class="article-body">${bodyHtml}</div>
       </div>
-      <nav class="post-nav" aria-label="上一篇和下一篇">
-        ${prev ? `<a href="${postUrl(prev)}"><span>上一篇</span><strong>${escapeHtml(prev.title)}</strong></a>` : '<span></span>'}
-        ${next ? `<a href="${postUrl(next)}"><span>下一篇</span><strong>${escapeHtml(next.title)}</strong></a>` : '<span></span>'}
+      <nav class="post-nav" aria-label="${langValue('上一篇和下一篇', 'Previous and next article')}">
+        ${prev ? `<a href="${postUrl(prev)}"><span>${langValue('上一篇', 'Previous')}</span><strong>${escapeHtml(viewPost(prev).title)}</strong></a>` : '<span></span>'}
+        ${next ? `<a href="${postUrl(next)}"><span>${langValue('下一篇', 'Next')}</span><strong>${escapeHtml(viewPost(next).title)}</strong></a>` : '<span></span>'}
       </nav>
     `;
   }
@@ -595,15 +647,20 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion || !('IntersectionObserver' in window)) return;
     const targets = $$('.section, .page-hero, .post-card, .product-card, .contact-card, .category-lane');
-    targets.forEach((item) => item.classList.add('reveal'));
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
+          entry.target.animate(
+            [
+              { opacity: 0.72, transform: 'translateY(12px)' },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 460, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }
+          );
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.08 });
     targets.forEach((item) => observer.observe(item));
   }
 

@@ -17,6 +17,9 @@
       const saved = localStorage.getItem('cs-theme');
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      const lang = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">
@@ -29,22 +32,23 @@
 
   <main id="main" class="page-main">
     <section class="page-hero shell compact shop-hero">
-      <p class="eyebrow">Shop</p>
-      <h1>数字商品和能说清边界的工具。</h1>
-      <p>这里先做展示、说明和联系购买。自动支付、自动发货都暂不开放，避免把问题藏进流程里。</p>
+      <p class="eyebrow" data-i18n-zh="扶手资源控制台" data-i18n-en="Armrest Resource Console">扶手资源控制台</p>
+      <h1 data-i18n-zh="数字商品和能说清边界的工具。" data-i18n-en="Digital resources with clear use and clear boundaries.">数字商品和能说清边界的工具。</h1>
+      <p data-i18n-zh="这里先做展示、说明和联系购买。自动支付、自动发货暂不开放，交付前先把用途和边界说清楚。" data-i18n-en="This page handles display, explanation, and contact-based requests. There is no automatic payment or delivery; use and boundaries are confirmed first.">这里先做展示、说明和联系购买。自动支付、自动发货暂不开放，交付前先把用途和边界说清楚。</p>
     </section>
 
     <section class="shell armrest-console">
       <div class="notice-panel">
-        <strong>合规声明</strong>
-        <p>不提供侵犯平台或他人权益的内容；不售卖作弊、破解、盗号、绕过平台规则的工具。所有脚本仅限学习、效率、配置、个人自动化和合法场景。</p>
+        <span class="boundary-signal"><i></i><b data-i18n-zh="边界清晰" data-i18n-en="Boundary Clear">边界清晰</b></span>
+        <strong data-i18n-zh="合规声明" data-i18n-en="Boundary System">合规声明</strong>
+        <p data-i18n-zh="不提供侵犯平台或他人权益的内容；不售卖作弊、破解、盗号、绕过平台规则的工具。所有脚本仅限学习、效率、配置、个人自动化和合法场景。" data-i18n-en="No content that violates platform or third-party rights; no cheating, cracking, account theft, or platform bypass tools. Scripts are limited to learning, efficiency, configuration, personal automation, and lawful use.">不提供侵犯平台或他人权益的内容；不售卖作弊、破解、盗号、绕过平台规则的工具。所有脚本仅限学习、效率、配置、个人自动化和合法场景。</p>
       </div>
       <div class="shop-toolbar" aria-label="商品筛选">
-        <button class="chip active" type="button" data-product-filter="all">全部</button>
-        <button class="chip" type="button" data-product-filter="脚本">脚本</button>
-        <button class="chip" type="button" data-product-filter="模板">模板</button>
-        <button class="chip" type="button" data-product-filter="教程">教程</button>
-        <button class="chip" type="button" data-product-filter="咨询">咨询</button>
+        <button class="chip active" type="button" data-product-filter="all" data-i18n-zh="全部" data-i18n-en="All">全部</button>
+        <button class="chip" type="button" data-product-filter="脚本" data-i18n-zh="脚本" data-i18n-en="Scripts">脚本</button>
+        <button class="chip" type="button" data-product-filter="模板" data-i18n-zh="模板" data-i18n-en="Templates">模板</button>
+        <button class="chip" type="button" data-product-filter="教程" data-i18n-zh="教程" data-i18n-en="Tutorials">教程</button>
+        <button class="chip" type="button" data-product-filter="咨询" data-i18n-zh="咨询" data-i18n-en="Consulting">咨询</button>
       </div>
       <div class="product-grid" id="shop-products" aria-live="polite"></div>
     </section>

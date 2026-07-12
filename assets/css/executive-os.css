@@ -62,20 +62,20 @@
 }
 
 :root[data-theme="light"] {
-  --bg-core: #f3e5cf;
-  --bg-cabin: #ead6ba;
-  --bg-panel: #f8ead7;
-  --bg-screen: #fff4e4;
-  --bg-screen-deep: #ead6ba;
+  --bg-core: #f3f2ed;
+  --bg-cabin: #e7e4dc;
+  --bg-panel: #f8f6f0;
+  --bg-screen: #fffdf8;
+  --bg-screen-deep: #e4e6e1;
   --bg-piano-black: #2b211d;
-  --bg-leather: #ead3b3;
-  --bg-smoked-glass: rgba(255, 244, 228, 0.72);
+  --bg-leather: #eadbc5;
+  --bg-smoked-glass: rgba(248, 247, 241, 0.76);
 
   --text-main: #221813;
-  --text-soft: #4b3a30;
-  --text-muted: #6d5c50;
-  --text-weak: #8a7769;
-  --text-disabled: #ad9b8b;
+  --text-soft: #41443f;
+  --text-muted: #656b64;
+  --text-weak: #82877f;
+  --text-disabled: #a3a69f;
 
   --metal-gold: #9d7536;
   --metal-champagne: #b89152;

@@ -8,11 +8,18 @@
   <meta name="theme-color" content="#10110f">
   <link rel="canonical" href="https://chongsheng180000.github.io/map.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="站点地图 | 重生日记">
+  <meta property="og:description" content="重生日记的主要页面、文章、资源与联系入口。">
+  <meta property="og:url" content="https://chongsheng180000.github.io/map.html">
   <script>
     (() => {
       const saved = localStorage.getItem('cs-theme');
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.dataset.theme = saved || (dark ? 'dark' : 'light');
+      const lang = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     })();
   </script>
   <link rel="stylesheet" href="assets/css/style.css">
@@ -24,18 +31,18 @@
   <div data-site-header></div>
   <main id="main" class="page-main">
     <section class="page-hero shell compact">
-      <p class="eyebrow">Map</p>
-      <h1>站点地图</h1>
-      <p>所有主要入口放在这里，XML 版本给搜索引擎看。</p>
+      <p class="eyebrow" data-i18n-zh="路线总览" data-i18n-en="Route Overview">路线总览</p>
+      <h1 data-i18n-zh="站点地图" data-i18n-en="Site Map">站点地图</h1>
+      <p data-i18n-zh="所有主要入口放在这里，XML 版本留给搜索引擎。" data-i18n-en="All primary routes are listed here. The XML version is available for search engines.">所有主要入口放在这里，XML 版本留给搜索引擎。</p>
     </section>
     <section class="shell link-board">
-      <a href="index.html">首页</a>
-      <a href="posts.html">文章</a>
-      <a href="shop.html">商品</a>
-      <a href="about.html">关于</a>
-      <a href="contact.html">联系</a>
-      <a href="search.html">搜索</a>
-      <a href="privacy.html">隐私说明</a>
+      <a href="index.html" data-i18n-zh="首页" data-i18n-en="Home">首页</a>
+      <a href="posts.html" data-i18n-zh="文章" data-i18n-en="Articles">文章</a>
+      <a href="shop.html" data-i18n-zh="商品" data-i18n-en="Shelf">商品</a>
+      <a href="about.html" data-i18n-zh="关于" data-i18n-en="About">关于</a>
+      <a href="contact.html" data-i18n-zh="联系" data-i18n-en="Contact">联系</a>
+      <a href="search.html" data-i18n-zh="搜索" data-i18n-en="Search">搜索</a>
+      <a href="privacy.html" data-i18n-zh="隐私说明" data-i18n-en="Privacy">隐私说明</a>
       <a href="sitemap.xml">sitemap.xml</a>
       <a href="rss.xml">rss.xml</a>
     </section>

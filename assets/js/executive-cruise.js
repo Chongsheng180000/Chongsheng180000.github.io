@@ -5,6 +5,7 @@
   const posts = window.BLOG_POSTS || [];
   const products = window.BLOG_PRODUCTS || [];
   const shell = root.querySelector('.executive-cockpit-shell');
+  const steeringController = root.querySelector('[data-steering-controller]');
   const steeringRim = root.querySelector('[data-steering-rim]');
   const searchOverlay = root.querySelector('[data-search-overlay]');
   const searchInput = root.querySelector('[data-cruise-search]');
@@ -112,7 +113,8 @@
     Scripts: 'build',
     Notes: 'thought'
   };
-  const panels = ['read', 'build', 'daily', 'shelf'];
+  // Console routes intentionally follow the visible strip from left to right.
+  const panels = ['read', 'build', 'shelf', 'daily'];
   const postCount = posts.length || 6;
   const productCount = products.length || 0;
   const recentPosts = posts
@@ -305,7 +307,7 @@
   function cycleCategory(step = 1) {
     state.selectedCategory = (state.selectedCategory + step + categories.length) % categories.length;
     state.statusFocus = categoryStatusMap[categories[state.selectedCategory]] || currentDriveMode().accentStatus;
-    cyclePanel(step);
+    render();
   }
 
   function changeSpeed(delta) {
@@ -581,7 +583,7 @@
   }
 
   function initDragging() {
-    if (!steeringRim) return;
+    if (!steeringController || !steeringRim) return;
     let dragging = false;
     const updateFromPointer = (event) => {
       const rect = steeringRim.getBoundingClientRect();
@@ -595,24 +597,24 @@
       if (state.cruiseMode !== 'paused') state.cruiseMode = 'manual';
       render();
     };
-    steeringRim.addEventListener('pointerdown', (event) => {
+    steeringController.addEventListener('pointerdown', (event) => {
       if (event.target.closest('button')) return;
       dragging = true;
       state.steeringPointerDown = true;
-      steeringRim.setPointerCapture(event.pointerId);
+      steeringController.setPointerCapture(event.pointerId);
       updateFromPointer(event);
     });
-    steeringRim.addEventListener('pointermove', (event) => {
+    steeringController.addEventListener('pointermove', (event) => {
       if (dragging) updateFromPointer(event);
     });
-    steeringRim.addEventListener('pointerup', (event) => {
+    steeringController.addEventListener('pointerup', (event) => {
       dragging = false;
       state.steeringPointerDown = false;
       state.lastSteerAt = performance.now();
       state.steeringVelocity += state.steeringAngle * -0.028;
-      try { steeringRim.releasePointerCapture(event.pointerId); } catch {}
+      try { steeringController.releasePointerCapture(event.pointerId); } catch {}
     });
-    steeringRim.addEventListener('pointercancel', () => {
+    steeringController.addEventListener('pointercancel', () => {
       dragging = false;
       state.steeringPointerDown = false;
       state.lastSteerAt = performance.now();
@@ -686,14 +688,6 @@
     searchInput?.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') submitSearch();
       if (event.key === 'Escape') closeSearch();
-    });
-
-    root.querySelectorAll('.main-console-screen, [data-steering-controller]').forEach((zone) => {
-      zone.addEventListener('wheel', (event) => {
-        if (state.cruiseMode !== 'manual') return;
-        event.preventDefault();
-        cyclePanel(event.deltaY > 0 ? 1 : -1);
-      }, { passive: false });
     });
 
     document.addEventListener('keydown', handleKeydown);

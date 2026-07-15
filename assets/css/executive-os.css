@@ -55,10 +55,10 @@
   --radius-cockpit: 36px;
   --radius-pill: 999px;
 
-  --font-exec-sans: "Inter", "Geist", "Satoshi", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-exec-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
-  --font-exec-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "Inter", "PingFang SC", serif;
-  --font-exec-mono: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", Consolas, "DIN Alternate", monospace;
+  --font-exec-sans: "Segoe UI Variable Text", "Aptos", "Noto Sans SC", "Noto Sans", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei UI", system-ui, sans-serif;
+  --font-exec-serif: "Noto Serif SC", "Noto Serif", "STZhongsong", "Songti SC", "SimSun", serif;
+  --font-exec-display: "Noto Serif SC", "Noto Serif", "Bodoni MT", "Baskerville", "STZhongsong", "Songti SC", serif;
+  --font-exec-mono: "Cascadia Mono", "Aptos Mono", "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
 }
 
 :root[data-theme="light"] {

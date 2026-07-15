@@ -9,9 +9,9 @@
   --page-line: rgba(255, 255, 255, 0.09);
   --page-line-strong: rgba(200, 178, 122, 0.28);
   --page-shadow: 0 32px 90px rgba(0, 0, 0, 0.38);
-  --font-ui-luxury: "MiSans", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei UI", system-ui, sans-serif;
-  --font-reading-luxury: "Source Han Serif SC", "Noto Serif CJK SC", "STZhongsong", "Songti SC", "SimSun", serif;
-  --font-instrument: "IBM Plex Mono", "JetBrains Mono", "DIN Alternate", "SFMono-Regular", Consolas, monospace;
+  --font-ui-luxury: "Segoe UI Variable Text", "Aptos", "Noto Sans SC", "Noto Sans", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei UI", system-ui, sans-serif;
+  --font-reading-luxury: "Noto Serif SC", "Noto Serif", "STZhongsong", "Songti SC", "SimSun", serif;
+  --font-instrument: "Cascadia Mono", "Aptos Mono", "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
 }
 
 body:not([data-page="home"]) {

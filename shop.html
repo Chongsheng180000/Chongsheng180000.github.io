@@ -43,14 +43,16 @@
         <strong data-i18n-zh="合规声明" data-i18n-en="Boundary System">合规声明</strong>
         <p data-i18n-zh="不提供侵犯平台或他人权益的内容；不售卖作弊、破解、盗号、绕过平台规则的工具。所有脚本仅限学习、效率、配置、个人自动化和合法场景。" data-i18n-en="No content that violates platform or third-party rights; no cheating, cracking, account theft, or platform bypass tools. Scripts are limited to learning, efficiency, configuration, personal automation, and lawful use.">不提供侵犯平台或他人权益的内容；不售卖作弊、破解、盗号、绕过平台规则的工具。所有脚本仅限学习、效率、配置、个人自动化和合法场景。</p>
       </div>
-      <div class="shop-toolbar" aria-label="商品筛选">
-        <button class="chip active" type="button" data-product-filter="all" data-i18n-zh="全部" data-i18n-en="All">全部</button>
-        <button class="chip" type="button" data-product-filter="脚本" data-i18n-zh="脚本" data-i18n-en="Scripts">脚本</button>
-        <button class="chip" type="button" data-product-filter="模板" data-i18n-zh="模板" data-i18n-en="Templates">模板</button>
-        <button class="chip" type="button" data-product-filter="教程" data-i18n-zh="教程" data-i18n-en="Tutorials">教程</button>
-        <button class="chip" type="button" data-product-filter="咨询" data-i18n-zh="咨询" data-i18n-en="Consulting">咨询</button>
+      <div class="shop-console-deck">
+        <div class="shop-console-readout" aria-live="polite">
+          <span data-i18n-zh="资源陈列" data-i18n-en="Resource Display">资源陈列</span>
+          <strong id="shop-product-count">0 件</strong>
+          <i aria-hidden="true"></i>
+          <b id="shop-active-category">全部板块</b>
+        </div>
+        <div class="shop-toolbar" id="shop-category-controls" aria-label="商品筛选" data-i18n-aria-zh="商品筛选" data-i18n-aria-en="Product filters"></div>
       </div>
-      <div class="product-grid" id="shop-products" aria-live="polite"></div>
+      <div class="product-showroom" id="shop-products" aria-live="polite"></div>
     </section>
   </main>
 

@@ -3,6 +3,7 @@
 
   const posts = window.BLOG_POSTS || [];
   const products = window.BLOG_PRODUCTS || [];
+  const productCategories = window.BLOG_PRODUCT_CATEGORIES || [];
   const body = document.body;
   const page = body.dataset.page || 'home';
   const savedLanguage = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
@@ -578,12 +579,12 @@
     `;
   }
 
-  function renderProductCard(product) {
+  function renderProductCard(product, index = 0) {
     const item = viewProduct(product);
     return `
       <article class="product-card" data-kind="${escapeHtml(item.kind)}">
         <div class="product-top">
-          <span>${escapeHtml(item.kind)}</span>
+          <span><small>${String(index + 1).padStart(2, '0')}</small>${escapeHtml(item.kind)}</span>
           <em>${escapeHtml(item.status)}</em>
         </div>
         <h3>${escapeHtml(item.name)}</h3>
@@ -601,16 +602,72 @@
   function renderShopPage() {
     const mount = $('#shop-products');
     if (!mount) return;
-    const buttons = $$('[data-product-filter]');
+    const controls = $('#shop-category-controls');
+    const countMount = $('#shop-product-count');
+    const activeMount = $('#shop-active-category');
+    const categories = productCategories.length
+      ? productCategories
+      : [...new Set(products.map((item) => item.kind))].map((key) => ({ key, en: products.find((item) => item.kind === key)?.kindEn || key, code: key.slice(0, 3), desc: '', descEn: '' }));
     let active = 'all';
 
-    const update = () => {
-      const result = active === 'all' ? products : products.filter((item) => item.kind === active);
-      mount.innerHTML = result.map(renderProductCard).join('');
-      buttons.forEach((button) => button.classList.toggle('active', button.dataset.productFilter === active));
+    const categoryView = (category) => ({
+      ...category,
+      label: currentLang() === 'en' ? category.en : category.key,
+      description: currentLang() === 'en' ? category.descEn : category.desc
+    });
+
+    const renderCategorySection = (category, entries, categoryIndex) => {
+      const view = categoryView(category);
+      return `
+        <section class="product-category-section" data-category="${escapeHtml(category.key)}">
+          <header class="product-category-heading">
+            <span>${String(categoryIndex + 1).padStart(2, '0')}</span>
+            <div>
+              <p>${escapeHtml(category.code || 'CS')}</p>
+              <h2>${escapeHtml(view.label)}</h2>
+              <small>${escapeHtml(view.description)}</small>
+            </div>
+            <strong>${String(entries.length).padStart(2, '0')}</strong>
+          </header>
+          <div class="product-grid">
+            ${entries.map((product, index) => renderProductCard(product, index)).join('')}
+          </div>
+        </section>
+      `;
     };
 
-    buttons.forEach((button) => {
+    const update = () => {
+      const visibleCategories = active === 'all' ? categories : categories.filter((category) => category.key === active);
+      const result = active === 'all' ? products : products.filter((item) => item.kind === active);
+      mount.innerHTML = visibleCategories.map((category) => {
+        const entries = products.filter((item) => item.kind === category.key);
+        return renderCategorySection(category, entries, categories.indexOf(category));
+      }).join('');
+      if (countMount) countMount.textContent = currentLang() === 'en' ? `${result.length} items` : `${result.length} 件`;
+      if (activeMount) {
+        const selected = categories.find((category) => category.key === active);
+        activeMount.textContent = selected ? categoryView(selected).label : langValue('全部板块', 'All departments');
+      }
+      $$('[data-product-filter]', controls || document).forEach((button) => {
+        const selected = button.dataset.productFilter === active;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      initReveal(mount);
+    };
+
+    if (controls) {
+      controls.innerHTML = [
+        `<button class="chip active" type="button" data-product-filter="all" aria-pressed="true"><span>00</span>${langValue('全部', 'All')}<small>${products.length}</small></button>`,
+        ...categories.map((category, index) => {
+          const view = categoryView(category);
+          const count = products.filter((item) => item.kind === category.key).length;
+          return `<button class="chip" type="button" data-product-filter="${escapeHtml(category.key)}" aria-pressed="false"><span>${String(index + 1).padStart(2, '0')}</span>${escapeHtml(view.label)}<small>${count}</small></button>`;
+        })
+      ].join('');
+    }
+
+    $$('[data-product-filter]', controls || document).forEach((button) => {
       button.addEventListener('click', () => {
         active = button.dataset.productFilter;
         update();
@@ -643,10 +700,10 @@
     });
   }
 
-  function initReveal() {
+  function initReveal(scope = document) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion || !('IntersectionObserver' in window)) return;
-    const targets = $$('.section, .page-hero, .post-card, .product-card, .contact-card, .category-lane');
+    const targets = $$('.section, .page-hero, .post-card, .product-card, .product-category-section, .contact-card, .category-lane', scope);
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {

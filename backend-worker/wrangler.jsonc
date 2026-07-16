@@ -2,5 +2,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "chongsheng-backend",
   "main": "src/index.ts",
-  "compatibility_date": "2026-07-16"
+  "compatibility_date": "2026-07-16",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "chongsheng-contact",
+      "database_id": "1cc2ca63-b4fe-4e74-a19b-e513bd622523"
+    }
+  ]
 }

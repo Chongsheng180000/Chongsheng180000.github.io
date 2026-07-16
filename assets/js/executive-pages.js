@@ -184,6 +184,14 @@
   function initContactConsole() {
     if (page !== 'contact') return;
     const request = $('[data-contact-request]');
+    const form = $('#contact-form');
+    const nameInput = $('#contact-name');
+    const emailInput = $('#contact-email');
+    const messageInput = $('#contact-message-input');
+    const messageCount = $('[data-contact-message-count]');
+    const status = $('[data-contact-form-status]');
+    const submit = $('[data-contact-submit]');
+    const submitLabel = submit?.querySelector('span');
     const slug = new URLSearchParams(window.location.search).get('product');
     const product = products.find((item) => item.slug === slug);
     if (request && product) {
@@ -192,8 +200,17 @@
       request.innerHTML = `
         <span>${t('当前咨询', 'Current request')}</span>
         <strong>${escapeHtml(name)}</strong>
-        <a href="mailto:Chongsheng20000@gmail.com?subject=${encodeURIComponent(`${t('商品咨询', 'Product request')}: ${name}`)}">${t('用邮箱说明需求', 'Describe it by email')}</a>
+        <a href="#contact-message" data-focus-contact>${t('填写消息表单', 'Open message form')}</a>
       `;
+      if (messageInput) {
+        messageInput.placeholder = t(
+          `请说明“${name}”的用途、环境和具体问题。`,
+          `Describe the use case, environment, and question for “${name}”.`
+        );
+      }
+      $('[data-focus-contact]', request)?.addEventListener('click', () => {
+        window.setTimeout(() => messageInput?.focus(), reduceMotion ? 0 : 320);
+      });
     }
 
     $$('[data-copy-value]').forEach((button) => {
@@ -208,6 +225,111 @@
           window.prompt(t('请手动复制', 'Copy manually'), value);
         }
       });
+    });
+
+    if (!form || !nameInput || !emailInput || !messageInput || !status || !submit || !submitLabel) return;
+
+    const endpoint = 'https://chongsheng-backend.chongsheng20000.workers.dev/api/contact';
+    const defaultStatus = () => t(
+      '消息最多保留 180 天，只用于查看和回复。',
+      'Messages are retained for up to 180 days and used only for review and reply.'
+    );
+    const countCharacters = (value) => Array.from(value).length;
+    const setStatus = (state, zh, en) => {
+      status.dataset.state = state;
+      status.textContent = t(zh, en);
+    };
+    const updateCount = () => {
+      const count = countCharacters(messageInput.value);
+      if (messageCount) {
+        messageCount.textContent = `${count} / 2000`;
+        messageCount.dataset.limit = count > 2000 ? 'over' : count > 1800 ? 'near' : 'normal';
+      }
+    };
+    const setFieldValidity = (field, valid) => {
+      field.setAttribute('aria-invalid', String(!valid));
+    };
+
+    [nameInput, emailInput, messageInput].forEach((field) => {
+      field.addEventListener('input', () => {
+        field.removeAttribute('aria-invalid');
+        if (status.dataset.state === 'error') {
+          status.dataset.state = 'idle';
+          status.textContent = defaultStatus();
+        }
+      });
+    });
+    messageInput.addEventListener('input', updateCount);
+    updateCount();
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submit.disabled) return;
+
+      const payload = {
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        message: messageInput.value.trim()
+      };
+      const nameValid = countCharacters(payload.name) >= 1 && countCharacters(payload.name) <= 50;
+      const emailValid = payload.email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/u.test(payload.email);
+      const messageLength = countCharacters(payload.message);
+      const messageValid = messageLength >= 10 && messageLength <= 2000;
+
+      setFieldValidity(nameInput, nameValid);
+      setFieldValidity(emailInput, emailValid);
+      setFieldValidity(messageInput, messageValid);
+
+      if (!nameValid || !emailValid || !messageValid) {
+        setStatus('error', '请检查姓名、邮箱和消息长度。', 'Check the name, email, and message length.');
+        const firstInvalid = [nameInput, emailInput, messageInput].find((field) => field.getAttribute('aria-invalid') === 'true');
+        firstInvalid?.focus();
+        return;
+      }
+
+      submit.disabled = true;
+      submit.setAttribute('aria-busy', 'true');
+      submitLabel.textContent = t('正在发送', 'Sending');
+      setStatus('submitting', '正在连接消息服务，请稍候。', 'Connecting to the message service.');
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 15_000);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-store',
+          credentials: 'omit',
+          referrerPolicy: 'strict-origin-when-cross-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+
+        if (response.ok) {
+          form.reset();
+          updateCount();
+          setStatus('success', '消息已经收到。我会通过你留下的邮箱回复。', 'Message received. I will reply to the email you provided.');
+          return;
+        }
+
+        if (response.status === 429) {
+          setStatus('error', '提交有点频繁，请 10 分钟后再试。', 'Too many submissions. Try again in ten minutes.');
+        } else if (response.status === 400) {
+          setStatus('error', '内容没有通过检查，请确认字段和长度。', 'The message did not pass validation. Check all fields and lengths.');
+        } else if (response.status === 403) {
+          setStatus('error', '当前页面来源无法提交，请从博客联系页重试。', 'This page origin cannot submit. Retry from the blog contact page.');
+        } else {
+          setStatus('error', '消息暂时没有送达。请稍后重试，或直接发送邮件。', 'The message could not be delivered. Retry later or use email.');
+        }
+      } catch {
+        setStatus('error', '无法连接消息服务。请检查网络，或直接发送邮件。', 'The message service could not be reached. Check the network or use email.');
+      } finally {
+        window.clearTimeout(timeout);
+        submit.disabled = false;
+        submit.removeAttribute('aria-busy');
+        submitLabel.textContent = t('发送消息', 'Send message');
+      }
     });
   }
 

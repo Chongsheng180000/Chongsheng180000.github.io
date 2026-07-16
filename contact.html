@@ -38,6 +38,49 @@
       <div class="contact-request-console" data-contact-request hidden></div>
     </section>
 
+    <section class="shell contact-message-console" id="contact-message" aria-labelledby="contact-message-title">
+      <header class="contact-message-head">
+        <div class="contact-message-signal">
+          <i aria-hidden="true"></i>
+          <span data-i18n-zh="消息通道在线" data-i18n-en="Message channel online">消息通道在线</span>
+        </div>
+        <p class="eyebrow" data-i18n-zh="加密消息入口" data-i18n-en="Secure Message Input">加密消息入口</p>
+        <h2 id="contact-message-title" data-i18n-zh="把事情写清楚，我会从这里收到。" data-i18n-en="Describe the request clearly. It will arrive here.">把事情写清楚，我会从这里收到。</h2>
+        <p data-i18n-zh="姓名、回复邮箱和具体事项是必填项。提交后消息进入私有消息库，不会公开展示。" data-i18n-en="Your name, reply email, and a concrete message are required. Submissions enter a private inbox and are never displayed publicly.">姓名、回复邮箱和具体事项是必填项。提交后消息进入私有消息库，不会公开展示。</p>
+      </header>
+
+      <form class="contact-message-form" id="contact-form" novalidate>
+        <div class="contact-form-fields">
+          <label class="contact-field">
+            <span data-i18n-zh="怎么称呼" data-i18n-en="Name">怎么称呼</span>
+            <input id="contact-name" name="name" type="text" required minlength="1" maxlength="50" autocomplete="name" data-i18n-placeholder-zh="1—50 字" data-i18n-placeholder-en="1–50 characters" placeholder="1—50 字">
+          </label>
+
+          <label class="contact-field">
+            <span data-i18n-zh="回复邮箱" data-i18n-en="Reply email">回复邮箱</span>
+            <input id="contact-email" name="email" type="email" required maxlength="254" autocomplete="email" inputmode="email" data-i18n-placeholder-zh="name@example.com" data-i18n-placeholder-en="name@example.com" placeholder="name@example.com">
+          </label>
+
+          <label class="contact-field contact-field-message">
+            <span data-i18n-zh="具体事项" data-i18n-en="Message">具体事项</span>
+            <textarea id="contact-message-input" name="message" required minlength="10" maxlength="2000" rows="8" data-i18n-placeholder-zh="请说明用途、环境、遇到的问题，以及希望得到什么结果。" data-i18n-placeholder-en="Include the use case, environment, problem, and the result you expect." placeholder="请说明用途、环境、遇到的问题，以及希望得到什么结果。"></textarea>
+            <small class="contact-message-count" data-contact-message-count>0 / 2000</small>
+          </label>
+        </div>
+
+        <div class="contact-form-footer">
+          <div>
+            <p class="contact-form-status" data-contact-form-status role="status" aria-live="polite" data-state="idle" data-i18n-zh="消息最多保留 180 天，只用于查看和回复。" data-i18n-en="Messages are retained for up to 180 days and used only for review and reply.">消息最多保留 180 天，只用于查看和回复。</p>
+            <small data-i18n-zh="同一网络 10 分钟内最多提交 3 次。" data-i18n-en="Up to three submissions per network in ten minutes.">同一网络 10 分钟内最多提交 3 次。</small>
+          </div>
+          <button class="contact-submit" type="submit" data-contact-submit>
+            <span data-i18n-zh="发送消息" data-i18n-en="Send message">发送消息</span>
+            <i aria-hidden="true">→</i>
+          </button>
+        </div>
+      </form>
+    </section>
+
     <section class="shell contact-grid contact-console-grid" aria-label="联系渠道">
       <article class="contact-card contact-channel">
         <span class="contact-channel__index">01</span>

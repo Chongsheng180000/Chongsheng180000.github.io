@@ -234,6 +234,7 @@
     const turnstileSiteKey = '0x4AAAAAAD37vkMTmVjlFuEp';
     let turnstileToken = '';
     let turnstileWidgetId = null;
+    let turnstileUnavailable = false;
     const defaultStatus = () => t(
       '消息最多保留 180 天，只用于查看和回复。',
       'Messages are retained for up to 180 days and used only for review and reply.'
@@ -255,14 +256,28 @@
     };
     const resetTurnstile = () => {
       turnstileToken = '';
-      if (turnstileWidgetId !== null && window.turnstile) {
+      if (!turnstileUnavailable && turnstileWidgetId !== null && window.turnstile) {
         window.turnstile.reset(turnstileWidgetId);
+      }
+    };
+    const useTurnstileFallback = () => {
+      if (!turnstileSlot || turnstileToken) return;
+      turnstileUnavailable = true;
+      turnstileSlot.dataset.state = 'fallback';
+      turnstileSlot.textContent = t('服务端限流已接管', 'Server rate limits active');
+      if (status.dataset.state === 'verification') {
+        status.dataset.state = 'idle';
+        status.textContent = defaultStatus();
       }
     };
     const renderTurnstile = (attempt = 0) => {
       if (!turnstileSlot || turnstileWidgetId !== null) return;
       if (!window.turnstile) {
-        if (attempt < 40) window.setTimeout(() => renderTurnstile(attempt + 1), 125);
+        if (attempt < 40) {
+          window.setTimeout(() => renderTurnstile(attempt + 1), 125);
+        } else {
+          useTurnstileFallback();
+        }
         return;
       }
 
@@ -285,7 +300,7 @@
         },
         'error-callback': () => {
           turnstileToken = '';
-          setStatus('error', '安全验证暂时无法加载，请刷新后重试。', 'The security check could not load. Refresh and try again.');
+          useTurnstileFallback();
         }
       });
     };
@@ -342,7 +357,7 @@
         return;
       }
 
-      if (!payload.turnstileToken) {
+      if (!payload.turnstileToken && !turnstileUnavailable) {
         setStatus('verification', '请先完成安全验证。', 'Complete the security check first.');
         turnstileSlot?.focus();
         return;

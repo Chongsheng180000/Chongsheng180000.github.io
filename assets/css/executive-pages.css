@@ -2298,6 +2298,25 @@ body[data-page="contact"] .contact-message-console::after {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--page-accent) 16%, transparent);
 }
 
+.contact-turnstile-slot[data-state="fallback"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: #9bc99e;
+  font-family: var(--font-instrument);
+  font-size: 9px;
+}
+
+.contact-turnstile-slot[data-state="fallback"]::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #91c993;
+  box-shadow: 0 0 9px rgba(145, 201, 147, 0.42);
+}
+
 .contact-form-footer {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

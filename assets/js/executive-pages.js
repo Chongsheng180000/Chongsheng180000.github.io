@@ -303,6 +303,11 @@
           useTurnstileFallback();
         }
       });
+      window.setTimeout(() => {
+        if (!turnstileToken && !turnstileSlot.querySelector('iframe')) {
+          useTurnstileFallback();
+        }
+      }, 6_000);
     };
 
     const verificationResult = new URLSearchParams(window.location.search).get('verified');
@@ -358,9 +363,12 @@
       }
 
       if (!payload.turnstileToken && !turnstileUnavailable) {
-        setStatus('verification', '请先完成安全验证。', 'Complete the security check first.');
-        turnstileSlot?.focus();
-        return;
+        if (turnstileSlot?.querySelector('iframe')) {
+          setStatus('verification', '请先完成安全验证。', 'Complete the security check first.');
+          turnstileSlot.focus();
+          return;
+        }
+        useTurnstileFallback();
       }
 
       submit.disabled = true;

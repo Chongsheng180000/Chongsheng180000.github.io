@@ -192,6 +192,7 @@
     const status = $('[data-contact-form-status]');
     const submit = $('[data-contact-submit]');
     const submitLabel = submit?.querySelector('span');
+    const turnstileSlot = $('[data-turnstile-slot]');
     const slug = new URLSearchParams(window.location.search).get('product');
     const product = products.find((item) => item.slug === slug);
     if (request && product) {
@@ -230,6 +231,9 @@
     if (!form || !nameInput || !emailInput || !messageInput || !status || !submit || !submitLabel) return;
 
     const endpoint = 'https://chongsheng-backend.chongsheng20000.workers.dev/api/contact';
+    const turnstileSiteKey = '0x4AAAAAAD37vkMTmVjlFuEp';
+    let turnstileToken = '';
+    let turnstileWidgetId = null;
     const defaultStatus = () => t(
       '消息最多保留 180 天，只用于查看和回复。',
       'Messages are retained for up to 180 days and used only for review and reply.'
@@ -249,6 +253,56 @@
     const setFieldValidity = (field, valid) => {
       field.setAttribute('aria-invalid', String(!valid));
     };
+    const resetTurnstile = () => {
+      turnstileToken = '';
+      if (turnstileWidgetId !== null && window.turnstile) {
+        window.turnstile.reset(turnstileWidgetId);
+      }
+    };
+    const renderTurnstile = (attempt = 0) => {
+      if (!turnstileSlot || turnstileWidgetId !== null) return;
+      if (!window.turnstile) {
+        if (attempt < 40) window.setTimeout(() => renderTurnstile(attempt + 1), 125);
+        return;
+      }
+
+      turnstileWidgetId = window.turnstile.render(turnstileSlot, {
+        sitekey: turnstileSiteKey,
+        action: 'contact',
+        theme: document.documentElement.dataset.theme === 'light' ? 'light' : 'dark',
+        language: isEn() ? 'en' : 'zh-CN',
+        appearance: 'interaction-only',
+        callback: (token) => {
+          turnstileToken = token;
+          if (status.dataset.state === 'verification') {
+            status.dataset.state = 'idle';
+            status.textContent = defaultStatus();
+          }
+        },
+        'expired-callback': () => {
+          turnstileToken = '';
+          setStatus('verification', '安全验证已过期，请重新完成验证。', 'The security check expired. Complete it again.');
+        },
+        'error-callback': () => {
+          turnstileToken = '';
+          setStatus('error', '安全验证暂时无法加载，请刷新后重试。', 'The security check could not load. Refresh and try again.');
+        }
+      });
+    };
+
+    const verificationResult = new URLSearchParams(window.location.search).get('verified');
+    if (verificationResult === 'success') {
+      setStatus('success', '邮箱已经确认，消息现在已进入收件箱。', 'Email confirmed. The message is now in the inbox.');
+    } else if (verificationResult === 'expired') {
+      setStatus('error', '验证链接无效或已过期，请重新提交消息。', 'The verification link is invalid or expired. Submit the message again.');
+    }
+    if (verificationResult) {
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete('verified');
+      window.history.replaceState({}, '', `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+    }
+
+    renderTurnstile();
 
     [nameInput, emailInput, messageInput].forEach((field) => {
       field.addEventListener('input', () => {
@@ -269,7 +323,8 @@
       const payload = {
         name: nameInput.value.trim(),
         email: emailInput.value.trim(),
-        message: messageInput.value.trim()
+        message: messageInput.value.trim(),
+        turnstileToken
       };
       const nameValid = countCharacters(payload.name) >= 1 && countCharacters(payload.name) <= 50;
       const emailValid = payload.email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/u.test(payload.email);
@@ -284,6 +339,12 @@
         setStatus('error', '请检查姓名、邮箱和消息长度。', 'Check the name, email, and message length.');
         const firstInvalid = [nameInput, emailInput, messageInput].find((field) => field.getAttribute('aria-invalid') === 'true');
         firstInvalid?.focus();
+        return;
+      }
+
+      if (!payload.turnstileToken) {
+        setStatus('verification', '请先完成安全验证。', 'Complete the security check first.');
+        turnstileSlot?.focus();
         return;
       }
 
@@ -305,24 +366,33 @@
           body: JSON.stringify(payload),
           signal: controller.signal
         });
+        const responseBody = await response.json().catch(() => ({}));
 
         if (response.ok) {
           form.reset();
           updateCount();
-          setStatus('success', '消息已经收到。我会通过你留下的邮箱回复。', 'Message received. I will reply to the email you provided.');
+          resetTurnstile();
+          if (responseBody.status === 'verification_required') {
+            setStatus('success', '验证邮件已发送。请在 30 分钟内点击邮件中的确认链接。', 'Verification email sent. Open its confirmation link within 30 minutes.');
+          } else {
+            setStatus('success', '消息已经收到。我会通过你留下的邮箱回复。', 'Message received. I will reply to the email you provided.');
+          }
           return;
         }
+
+        resetTurnstile();
 
         if (response.status === 429) {
           setStatus('error', '提交有点频繁，请 10 分钟后再试。', 'Too many submissions. Try again in ten minutes.');
         } else if (response.status === 400) {
           setStatus('error', '内容没有通过检查，请确认字段和长度。', 'The message did not pass validation. Check all fields and lengths.');
         } else if (response.status === 403) {
-          setStatus('error', '当前页面来源无法提交，请从博客联系页重试。', 'This page origin cannot submit. Retry from the blog contact page.');
+          setStatus('error', '安全验证未通过，请重新验证后再发送。', 'The security check failed. Complete it again before sending.');
         } else {
           setStatus('error', '消息暂时没有送达。请稍后重试，或直接发送邮件。', 'The message could not be delivered. Retry later or use email.');
         }
       } catch {
+        resetTurnstile();
         setStatus('error', '无法连接消息服务。请检查网络，或直接发送邮件。', 'The message service could not be reached. Check the network or use email.');
       } finally {
         window.clearTimeout(timeout);

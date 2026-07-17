@@ -68,6 +68,11 @@
           </label>
         </div>
 
+        <div class="contact-human-check" data-contact-turnstile>
+          <div class="contact-turnstile-slot" data-turnstile-slot tabindex="-1"></div>
+          <p data-i18n-zh="完成安全验证后才能发送。验证结果不会用于广告追踪。" data-i18n-en="Complete the security check before sending. The result is not used for advertising tracking.">完成安全验证后才能发送。验证结果不会用于广告追踪。</p>
+        </div>
+
         <div class="contact-form-footer">
           <div>
             <p class="contact-form-status" data-contact-form-status role="status" aria-live="polite" data-state="idle" data-i18n-zh="消息最多保留 180 天，只用于查看和回复。" data-i18n-en="Messages are retained for up to 180 days and used only for review and reply.">消息最多保留 180 天，只用于查看和回复。</p>
@@ -133,6 +138,7 @@
   <div data-site-footer></div>
   <script src="data/posts.js" defer></script>
   <script src="data/products.js" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/executive-pages.js" defer></script>
 </body>

@@ -6,10 +6,20 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test test/*.test.ts",
+    "db:migrate:local": "wrangler d1 migrations apply chongsheng-member-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply chongsheng-member-db --remote",
+    "secrets:generate": "node scripts/generate-secrets.mjs",
+    "cards:generate": "node scripts/generate-member-cards.mjs",
+    "cards:import:local": "wrangler d1 execute chongsheng-member-db --local --file cards.import.private.sql",
+    "cards:import:remote": "wrangler d1 execute chongsheng-member-db --remote --file cards.import.private.sql",
+    "member:admin": "node scripts/member-admin.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260716.1",
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
     "typescript": "^5.9.3",
     "wrangler": "^4.111.0"
   }

@@ -1,0 +1,5 @@
+MEMBER_CARD_PEPPER=replace_me
+MEMBER_SESSION_SECRET=replace_me
+DEVICE_HASH_PEPPER=replace_me
+IP_HASH_PEPPER=replace_me
+TURNSTILE_SECRET=optional

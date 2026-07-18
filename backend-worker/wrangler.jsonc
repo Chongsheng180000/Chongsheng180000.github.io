@@ -6,6 +6,11 @@
   "d1_databases": [
     {
       "binding": "DB",
+      "database_name": "chongsheng-member-db",
+      "database_id": "1405112c-1dd2-486b-9e12-cdd83bd00eec"
+    },
+    {
+      "binding": "CONTACT_DB",
       "database_name": "chongsheng-contact",
       "database_id": "1cc2ca63-b4fe-4e74-a19b-e513bd622523"
     }

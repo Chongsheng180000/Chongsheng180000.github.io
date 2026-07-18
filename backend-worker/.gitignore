@@ -1,4 +1,8 @@
 node_modules/
 .wrangler/
 .dev.vars
-.env*
+.env
+.env.*
+cards.private.txt
+cards.import.private.sql
+*.private.*

@@ -1,3 +1,13 @@
+import { hasAllowedOrigin, memberPreflight } from "./cors";
+import type { Env as MemberEnv } from "./env";
+import { handleHealth, handleRoot } from "./routes/health";
+import { handleMemberLogout } from "./routes/logout";
+import { handleMemberProductDetails } from "./routes/productDetails";
+import { handleMemberProducts } from "./routes/products";
+import { handleMemberSession } from "./routes/session";
+import { handleVerifyCard } from "./routes/verifyCard";
+import { json as memberJson } from "./response";
+
 const JSON_HEADERS = {
   "Content-Type": "application/json; charset=utf-8",
   "Cache-Control": "no-store",
@@ -18,8 +28,7 @@ const UNVERIFIED_RETENTION_SECONDS = 24 * 60 * 60;
 const MESSAGE_RETENTION_SECONDS = 180 * 24 * 60 * 60;
 const SAFE_ERROR = { ok: false, error: "Request rejected" } as const;
 
-interface Env {
-  DB: D1Database;
+interface Env extends MemberEnv {
   CONTACT_HASH_SECRET: string;
   TURNSTILE_SECRET: string;
   MAILER_URL: string;
@@ -251,7 +260,7 @@ async function handleContact(request: Request, env: Env, ctx: ExecutionContext):
   if (origin !== ALLOWED_ORIGIN) return json(SAFE_ERROR, 403);
 
   if (
-    !env.DB
+    !env.CONTACT_DB
     || !env.CONTACT_HASH_SECRET
     || !env.TURNSTILE_SECRET
     || !env.MAILER_URL
@@ -281,16 +290,17 @@ async function handleContact(request: Request, env: Env, ctx: ExecutionContext):
   const now = Math.floor(Date.now() / 1000);
   const messageId = crypto.randomUUID();
   let deliveryStateCreated = false;
+  const contactDb = env.CONTACT_DB;
 
   try {
     const ipHash = await hmacHex(`ip:${ipAddress}`, env.CONTACT_HASH_SECRET);
-    if (!await reserveIpRateLimitSlot(env.DB, ipHash, now)) {
+    if (!await reserveIpRateLimitSlot(contactDb, ipHash, now)) {
       return json(SAFE_ERROR, 429, origin);
     }
 
     const normalizedEmail = input.email.toLocaleLowerCase("en-US");
     const emailHash = await hmacHex(`email:${normalizedEmail}`, env.CONTACT_HASH_SECRET);
-    if (!await reserveEmailRateLimitSlot(env.DB, messageId, emailHash, now)) {
+    if (!await reserveEmailRateLimitSlot(contactDb, messageId, emailHash, now)) {
       return json(SAFE_ERROR, 429, origin);
     }
     deliveryStateCreated = true;
@@ -299,7 +309,7 @@ async function handleContact(request: Request, env: Env, ctx: ExecutionContext):
     const tokenHash = await sha256Hex(token);
     const expiresAt = now + VERIFICATION_TTL_SECONDS;
 
-    await env.DB.prepare(
+    await contactDb.prepare(
       `INSERT INTO contact_messages (
          id, name, email, message, created_at, status,
          verification_token_hash, verification_expires_at, verified_at
@@ -308,20 +318,20 @@ async function handleContact(request: Request, env: Env, ctx: ExecutionContext):
 
     const verificationUrl = `${WORKER_ORIGIN}/api/contact/verify?token=${encodeURIComponent(token)}`;
     if (!await sendVerificationEmail(env, input.email, input.name, verificationUrl)) {
-      await cleanupFailedDelivery(env.DB, messageId);
+      await cleanupFailedDelivery(contactDb, messageId);
       return json(SAFE_ERROR, 503, origin);
     }
 
     ctx.waitUntil(
-      env.DB.batch([
-        env.DB.prepare("DELETE FROM contact_rate_events WHERE created_at < ?1")
+      contactDb.batch([
+        contactDb.prepare("DELETE FROM contact_rate_events WHERE created_at < ?1")
           .bind(now - IP_RATE_WINDOW_SECONDS),
-        env.DB.prepare("DELETE FROM contact_email_rate_events WHERE created_at < ?1")
+        contactDb.prepare("DELETE FROM contact_email_rate_events WHERE created_at < ?1")
           .bind(now - EMAIL_DAILY_WINDOW_SECONDS),
-        env.DB.prepare(
+        contactDb.prepare(
           "DELETE FROM contact_messages WHERE status = 'pending_verification' AND verification_expires_at < ?1"
         ).bind(now - UNVERIFIED_RETENTION_SECONDS),
-        env.DB.prepare("DELETE FROM contact_messages WHERE status != 'pending_verification' AND created_at < ?1")
+        contactDb.prepare("DELETE FROM contact_messages WHERE status != 'pending_verification' AND created_at < ?1")
           .bind(now - MESSAGE_RETENTION_SECONDS)
       ]).then(() => undefined).catch(() => undefined)
     );
@@ -330,7 +340,7 @@ async function handleContact(request: Request, env: Env, ctx: ExecutionContext):
   } catch {
     if (deliveryStateCreated) {
       try {
-        await cleanupFailedDelivery(env.DB, messageId);
+        await cleanupFailedDelivery(contactDb, messageId);
       } catch {
         // The scheduled retention cleanup remains a final fallback.
       }
@@ -341,12 +351,12 @@ async function handleContact(request: Request, env: Env, ctx: ExecutionContext):
 
 async function handleVerification(request: Request, env: Env): Promise<Response> {
   const token = new URL(request.url).searchParams.get("token") || "";
-  if (!env.DB || !/^[A-Za-z0-9_-]{43}$/u.test(token)) return redirectToContact("expired");
+  if (!env.CONTACT_DB || !/^[A-Za-z0-9_-]{43}$/u.test(token)) return redirectToContact("expired");
 
   try {
     const now = Math.floor(Date.now() / 1000);
     const tokenHash = await sha256Hex(token);
-    const result = await env.DB.prepare(
+    const result = await env.CONTACT_DB.prepare(
       `UPDATE contact_messages
        SET status = 'new', verified_at = ?1, verification_token_hash = NULL, verification_expires_at = NULL
        WHERE verification_token_hash = ?2
@@ -378,11 +388,36 @@ export default {
     const url = new URL(request.url);
 
     if (request.method === "GET" && url.pathname === "/") {
-      return json({ ok: true, service: "chongsheng-backend" });
+      return handleRoot();
     }
 
     if (request.method === "GET" && url.pathname === "/health") {
-      return json({ ok: true, status: "healthy" });
+      return handleHealth();
+    }
+
+    if (url.pathname.startsWith("/api/member/")) {
+      if (request.method === "OPTIONS") return memberPreflight(request);
+      if (!hasAllowedOrigin(request)) return memberJson(SAFE_ERROR, 403);
+
+      if (url.pathname === "/api/member/verify-card" && request.method === "POST") {
+        return handleVerifyCard(request, env);
+      }
+      if (url.pathname === "/api/member/session" && request.method === "GET") {
+        return handleMemberSession(request, env);
+      }
+      if (url.pathname === "/api/member/products" && request.method === "GET") {
+        return handleMemberProducts(request, env);
+      }
+      if (url.pathname === "/api/member/logout" && request.method === "POST") {
+        return handleMemberLogout(request, env);
+      }
+
+      const productMatch = url.pathname.match(/^\/api\/member\/products\/([^/]+)$/u);
+      if (productMatch && request.method === "GET") {
+        return handleMemberProductDetails(request, env, decodeURIComponent(productMatch[1]));
+      }
+
+      return memberJson({ ok: false, error: "Not Found" }, 404, ALLOWED_ORIGIN);
     }
 
     if (url.pathname === "/api/contact" && request.method === "OPTIONS") {

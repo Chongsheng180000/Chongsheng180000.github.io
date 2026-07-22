@@ -22,3 +22,9 @@ The member system reads these values only from Worker runtime secrets or the ign
 - Keep an offline encrypted backup. Never commit the value to Git, configuration, documentation, tests, frontend code, or logs.
 
 The other member secrets require the same handling. Secret values must not be stored in `wrangler.jsonc`.
+
+## Member administration
+
+Routine card, device, session, risk, and hidden-product management is available through the local CLI. It does not require opening the D1 editor.
+
+See [MEMBER_ADMIN.md](./MEMBER_ADMIN.md) for production-safe command examples.

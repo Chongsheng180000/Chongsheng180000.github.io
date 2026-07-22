@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>站点地图 | 重生日记</title>
-  <meta name="description" content="重生日记的页面入口。">
+  <meta name="description" content="重生日记的交互式站点地图，可检索主要页面、文章路线与数字资源。">
   <meta name="theme-color" content="#10110f">
   <link rel="canonical" href="https://chongsheng180000.github.io/map.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:title" content="站点地图 | 重生日记">
-  <meta property="og:description" content="重生日记的主要页面、文章、资源与联系入口。">
+  <meta property="og:description" content="沿着路线图查找页面、文章、资源与站点信号。">
   <meta property="og:url" content="https://chongsheng180000.github.io/map.html">
   <script>
     (() => {
@@ -25,32 +25,153 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/executive-os.css">
   <link rel="stylesheet" href="assets/css/executive-pages.css">
+  <link rel="stylesheet" href="assets/css/site-map.css">
 </head>
 <body data-page="map">
   <a class="skip-link" href="#main">跳到正文</a>
   <div data-site-header></div>
-  <main id="main" class="page-main">
-    <section class="page-hero shell compact">
-      <p class="eyebrow" data-i18n-zh="路线总览" data-i18n-en="Route Overview">路线总览</p>
-      <h1 data-i18n-zh="站点地图" data-i18n-en="Site Map">站点地图</h1>
-      <p data-i18n-zh="所有主要入口放在这里，XML 版本留给搜索引擎。" data-i18n-en="All primary routes are listed here. The XML version is available for search engines.">所有主要入口放在这里，XML 版本留给搜索引擎。</p>
+
+  <main id="main" class="page-main site-map-page">
+    <section class="shell map-command-header" aria-labelledby="map-title">
+      <div class="map-command-copy">
+        <p class="eyebrow" data-i18n-zh="导航总览 · 信号在线" data-i18n-en="NAVIGATION OVERVIEW · SIGNAL ONLINE">导航总览 · 信号在线</p>
+        <h1 id="map-title" data-i18n-zh="站点路线图" data-i18n-en="Site Route Map">站点路线图</h1>
+        <p data-i18n-zh="不是一张链接清单。选择舱室、检索文章，或者沿着路线直接进入要找的内容。" data-i18n-en="More than a link list. Select a cabin, search the archive, or follow a route directly to its destination.">不是一张链接清单。选择舱室、检索文章，或者沿着路线直接进入要找的内容。</p>
+      </div>
+      <dl class="map-odometer" aria-label="站点里程">
+        <div><dt data-i18n-zh="主要入口" data-i18n-en="Main routes">主要入口</dt><dd data-map-stat="routes">09</dd></div>
+        <div><dt data-i18n-zh="文章里程" data-i18n-en="Articles">文章里程</dt><dd data-map-stat="posts">00</dd></div>
+        <div><dt data-i18n-zh="资源节点" data-i18n-en="Resources">资源节点</dt><dd data-map-stat="products">00</dd></div>
+        <div class="is-signal"><dt data-i18n-zh="导航信号" data-i18n-en="Signal">导航信号</dt><dd><span aria-hidden="true"></span><b data-i18n-zh="正常" data-i18n-en="CLEAR">正常</b></dd></div>
+      </dl>
     </section>
-    <section class="shell link-board">
-      <a href="index.html" data-i18n-zh="首页" data-i18n-en="Home">首页</a>
-      <a href="posts.html" data-i18n-zh="文章" data-i18n-en="Articles">文章</a>
-      <a href="shop.html" data-i18n-zh="商品" data-i18n-en="Shelf">商品</a>
-      <a href="about.html" data-i18n-zh="关于" data-i18n-en="About">关于</a>
-      <a href="contact.html" data-i18n-zh="联系" data-i18n-en="Contact">联系</a>
-      <a href="search.html" data-i18n-zh="搜索" data-i18n-en="Search">搜索</a>
-      <a href="privacy.html" data-i18n-zh="隐私说明" data-i18n-en="Privacy">隐私说明</a>
-      <a href="sitemap.xml">sitemap.xml</a>
-      <a href="rss.xml">rss.xml</a>
+
+    <section class="shell route-navigation-console" aria-labelledby="route-console-title">
+      <header class="route-console-toolbar">
+        <div>
+          <p class="console-code">NAV / 01</p>
+          <h2 id="route-console-title" data-i18n-zh="路线控制台" data-i18n-en="Route Console">路线控制台</h2>
+        </div>
+        <div class="map-view-switch" role="group" aria-label="地图视图">
+          <button type="button" class="is-active" data-map-view="map" aria-pressed="true" data-i18n-zh="路线图" data-i18n-en="Map">路线图</button>
+          <button type="button" data-map-view="directory" aria-pressed="false" data-i18n-zh="完整目录" data-i18n-en="Directory">完整目录</button>
+        </div>
+      </header>
+
+      <div class="route-input-deck">
+        <label for="map-search">
+          <span data-i18n-zh="目的地检索" data-i18n-en="Destination search">目的地检索</span>
+          <input id="map-search" type="search" autocomplete="off" placeholder="搜索页面、文章、标签或资源" data-i18n-placeholder-zh="搜索页面、文章、标签或资源" data-i18n-placeholder-en="Search pages, articles, tags, or resources">
+          <kbd>/</kbd>
+        </label>
+        <div class="route-filters" role="group" aria-label="路线类型">
+          <button type="button" class="is-active" data-route-filter="all" aria-pressed="true" data-i18n-zh="全部路线" data-i18n-en="All routes">全部路线</button>
+          <button type="button" data-route-filter="reading" aria-pressed="false" data-i18n-zh="阅读" data-i18n-en="Reading">阅读</button>
+          <button type="button" data-route-filter="shelf" aria-pressed="false" data-i18n-zh="资源" data-i18n-en="Shelf">资源</button>
+          <button type="button" data-route-filter="identity" aria-pressed="false" data-i18n-zh="站主" data-i18n-en="Owner">站主</button>
+          <button type="button" data-route-filter="system" aria-pressed="false" data-i18n-zh="系统" data-i18n-en="System">系统</button>
+        </div>
+      </div>
+
+      <div class="map-search-results" data-map-search-results hidden aria-live="polite"></div>
+
+      <div class="route-map-view" data-map-panel="map">
+        <div class="route-map-stage" aria-label="交互式站点路线图">
+          <div class="topography" aria-hidden="true"></div>
+          <svg class="route-network" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="routeMetal" x1="0" x2="1">
+                <stop offset="0" stop-color="currentColor" stop-opacity=".12"/>
+                <stop offset=".5" stop-color="currentColor" stop-opacity=".78"/>
+                <stop offset="1" stop-color="currentColor" stop-opacity=".16"/>
+              </linearGradient>
+            </defs>
+            <path class="route-trunk" d="M75 278 C240 278 332 282 500 282 S755 278 925 278"/>
+            <path data-route-line="posts" d="M500 282 C406 246 346 178 258 137"/>
+            <path data-route-line="search" d="M500 282 C500 228 500 152 500 86"/>
+            <path data-route-line="shop" d="M500 282 C604 244 663 177 756 140"/>
+            <path data-route-line="about" d="M500 282 C352 308 243 354 155 407"/>
+            <path data-route-line="contact" d="M500 282 C447 354 389 419 323 476"/>
+            <path data-route-line="rss" d="M500 282 C558 353 617 420 680 478"/>
+            <path data-route-line="privacy" d="M500 282 C645 314 753 357 844 407"/>
+            <path data-route-line="xml" d="M844 407 C884 366 905 330 925 278"/>
+          </svg>
+
+          <div class="map-compass" aria-hidden="true"><span>N</span><i></i></div>
+          <div class="map-scale" aria-hidden="true"><i></i><span>CONTENT ROUTE / 2026</span></div>
+
+          <nav class="route-stations" aria-label="主要目的地">
+            <a class="route-station station-home is-selected" href="index.html" data-route-id="home" data-route-type="core" style="--x:50%;--y:50%">
+              <span>00</span><strong data-i18n-zh="驾驶舱" data-i18n-en="Cockpit">驾驶舱</strong><small>HOME</small>
+            </a>
+            <a class="route-station" href="posts.html" data-route-id="posts" data-route-type="reading" style="--x:25.8%;--y:24.5%">
+              <span>01</span><strong data-i18n-zh="文章路线" data-i18n-en="Reading">文章路线</strong><small data-route-node-count="posts">00</small>
+            </a>
+            <a class="route-station" href="search.html" data-route-id="search" data-route-type="system" style="--x:50%;--y:15.5%">
+              <span>02</span><strong data-i18n-zh="导航输入" data-i18n-en="Search">导航输入</strong><small>SEARCH</small>
+            </a>
+            <a class="route-station" href="shop.html" data-route-id="shop" data-route-type="shelf" style="--x:75.6%;--y:25%">
+              <span>03</span><strong data-i18n-zh="数字货架" data-i18n-en="Shelf">数字货架</strong><small data-route-node-count="products">00</small>
+            </a>
+            <a class="route-station" href="about.html" data-route-id="about" data-route-type="identity" style="--x:15.5%;--y:72.5%">
+              <span>04</span><strong data-i18n-zh="站主档案" data-i18n-en="Owner Profile">站主档案</strong><small>PROFILE</small>
+            </a>
+            <a class="route-station" href="contact.html" data-route-id="contact" data-route-type="identity" style="--x:32.3%;--y:85%">
+              <span>05</span><strong data-i18n-zh="联系通道" data-i18n-en="Contact">联系通道</strong><small>CONTACT</small>
+            </a>
+            <a class="route-station" href="rss.xml" data-route-id="rss" data-route-type="system" style="--x:68%;--y:85%">
+              <span>06</span><strong data-i18n-zh="信号订阅" data-i18n-en="Signal Feed">信号订阅</strong><small>RSS</small>
+            </a>
+            <a class="route-station" href="privacy.html" data-route-id="privacy" data-route-type="system" style="--x:84.5%;--y:72.5%">
+              <span>07</span><strong data-i18n-zh="隐私边界" data-i18n-en="Privacy">隐私边界</strong><small>BOUNDARY</small>
+            </a>
+            <a class="route-station station-minor" href="sitemap.xml" data-route-id="xml" data-route-type="system" style="--x:92.5%;--y:49.5%">
+              <span>08</span><strong data-i18n-zh="机器地图" data-i18n-en="XML Map">机器地图</strong><small>XML</small>
+            </a>
+          </nav>
+        </div>
+
+        <aside class="destination-console" aria-live="polite" data-destination-console>
+          <div class="destination-index"><span data-destination-code>00</span><i></i><small data-i18n-zh="当前目的地" data-i18n-en="CURRENT DESTINATION">当前目的地</small></div>
+          <p data-destination-path>CHONGSHENG DAILY OS / HOME</p>
+          <h2 data-destination-title>驾驶舱</h2>
+          <p data-destination-description>首页中控、近期文章和全站主要入口。</p>
+          <dl>
+            <div><dt data-i18n-zh="路线类型" data-i18n-en="Route type">路线类型</dt><dd data-destination-type>核心入口</dd></div>
+            <div><dt data-i18n-zh="节点状态" data-i18n-en="Node status">节点状态</dt><dd><span class="signal-dot" aria-hidden="true"></span><b data-i18n-zh="可通行" data-i18n-en="OPEN">可通行</b></dd></div>
+          </dl>
+          <a class="destination-enter" href="index.html" data-destination-link><span data-i18n-zh="进入目的地" data-i18n-en="Enter destination">进入目的地</span><b aria-hidden="true">→</b></a>
+          <p class="destination-hint" data-i18n-zh="点选路线节点查看详情；再次点击即可进入。" data-i18n-en="Select a route node for details; activate it again to enter.">点选路线节点查看详情；再次点击即可进入。</p>
+        </aside>
+      </div>
+
+      <div class="route-directory-view" data-map-panel="directory" hidden>
+        <div class="directory-status"><span data-directory-count>0</span><p data-i18n-zh="条可访问路线，内容从站点数据实时整理。" data-i18n-en="accessible routes, assembled from current site data.">条可访问路线，内容从站点数据实时整理。</p></div>
+        <div class="route-directory" data-route-directory></div>
+      </div>
     </section>
+
+    <section class="shell current-route-strip" aria-labelledby="recent-routes-title">
+      <header>
+        <p class="console-code">RECENT ROUTES / LIVE DATA</p>
+        <h2 id="recent-routes-title" data-i18n-zh="最近写下的路线" data-i18n-en="Recent reading routes">最近写下的路线</h2>
+        <a href="posts.html" data-i18n-zh="打开全部文章" data-i18n-en="Open all articles">打开全部文章</a>
+      </header>
+      <div class="recent-route-track" data-recent-routes></div>
+    </section>
+
+    <noscript>
+      <nav class="shell map-noscript" aria-label="站点主要链接">
+        <a href="index.html">首页</a><a href="posts.html">文章</a><a href="shop.html">商品</a><a href="about.html">关于</a><a href="contact.html">联系</a><a href="search.html">搜索</a><a href="privacy.html">隐私说明</a><a href="rss.xml">RSS</a><a href="sitemap.xml">XML Sitemap</a>
+      </nav>
+    </noscript>
   </main>
+
   <div data-site-footer></div>
   <script src="data/posts.js" defer></script>
   <script src="data/products.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/executive-pages.js" defer></script>
+  <script src="assets/js/site-map.js" defer></script>
 </body>
 </html>

@@ -6,7 +6,16 @@
   const productCategories = window.BLOG_PRODUCT_CATEGORIES || [];
   const body = document.body;
   const page = body.dataset.page || 'home';
-  const savedLanguage = localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh';
+  const languageParam = new URLSearchParams(window.location.search).get('lang');
+  const requestedLanguage = ['zh', 'en'].includes(languageParam) ? languageParam : null;
+  if (requestedLanguage) {
+    try {
+      localStorage.setItem('cs-lang', requestedLanguage);
+    } catch {
+      // The URL remains the source of truth when storage is unavailable.
+    }
+  }
+  const savedLanguage = requestedLanguage || (localStorage.getItem('cs-lang') === 'en' ? 'en' : 'zh');
   document.documentElement.dataset.lang = savedLanguage;
   document.documentElement.lang = savedLanguage === 'en' ? 'en' : 'zh-CN';
 
@@ -14,8 +23,7 @@
     { zh: '首页', en: 'Home', href: 'index.html', key: 'home' },
     { zh: '随笔', en: 'Essays', href: 'posts.html?category=%E9%9A%8F%E7%AC%94', key: 'posts' },
     { zh: '日常', en: 'Daily', href: 'posts.html?category=%E6%97%A5%E5%B8%B8', key: 'posts' },
-    { zh: '经验', en: 'Notes', href: 'posts.html?category=%E7%BB%8F%E9%AA%8C', key: 'posts' },
-    { zh: '思想', en: 'Thought', href: 'posts.html?category=%E6%80%9D%E6%83%B3', key: 'posts' },
+    { zh: '地图', en: 'Map', href: 'map.html', key: 'map' },
     { zh: '商品', en: 'Shelf', href: 'shop.html', key: 'shop' },
     { zh: '关于', en: 'About', href: 'about.html', key: 'about' },
     { zh: '搜索', en: 'Search', href: 'search.html', key: 'search' }
@@ -33,6 +41,7 @@
     home: ['重生日记 | 日常、工具和一点判断', 'Chongsheng Journal | Notes, Tools, and Judgment'],
     posts: ['文章 | 重生日记', 'Articles | Chongsheng Journal'],
     shop: ['商品 | 重生日记', 'Digital Shelf | Chongsheng Journal'],
+    member: ['会员资源舱 | 重生日记', 'Member Lounge | Chongsheng Journal'],
     about: ['关于 | 重生日记', 'About | Chongsheng Journal'],
     contact: ['联系 | 重生日记', 'Contact | Chongsheng Journal'],
     search: ['搜索 | 重生日记', 'Search | Chongsheng Journal'],
@@ -308,17 +317,29 @@
       applyTranslations();
       window.dispatchEvent(new CustomEvent('cs:languagechange', { detail: { lang: currentLang() } }));
     };
+    let switching = false;
     const handleToggle = () => {
+      if (switching) return;
+      switching = true;
       const next = currentLang() === 'en' ? 'zh' : 'en';
-      localStorage.setItem('cs-lang', next);
-      document.documentElement.animate(
-        [{ opacity: 1 }, { opacity: 0.82 }],
-        { duration: 120, easing: 'ease-out' }
-      ).finished.finally(() => window.location.reload());
+      try {
+        localStorage.setItem('cs-lang', next);
+      } catch {
+        switching = false;
+        return;
+      }
+      root.classList.add('is-language-switching');
+      const target = new URL(window.location.href);
+      target.searchParams.set('lang', next);
+      window.location.assign(target.href);
     };
     const bind = () => $('.language-toggle')?.addEventListener('click', handleToggle);
     bind();
     sync();
+    window.addEventListener('storage', (event) => {
+      if (event.key !== 'cs-lang' || !['zh', 'en'].includes(event.newValue)) return;
+      if (event.newValue !== currentLang()) window.location.reload();
+    });
   }
 
   function initMobileNav() {

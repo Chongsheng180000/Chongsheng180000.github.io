@@ -2300,3 +2300,36 @@ body[data-page="home"] .split-section .section-heading > p:not(.eyebrow) {
 @keyframes lightPass { from { transform: translateY(-70px) rotate(13deg); } to { transform: translateY(430px) rotate(13deg); } }
 @keyframes roadFlow { from { background-position-y: -80px; } to { background-position-y: 140px; } }
 @keyframes ambientIgnition { from { transform: scaleX(.05); opacity: 0; } to { transform: scaleX(1); opacity: .78; } }
+
+/* Daylight receives its own restrained ambient palette instead of night neon on ivory trim. */
+:root[data-theme="light"] .executive-cockpit-home.ambient-theme-obsidian-gold { --ambient-primary: #8d612f; --ambient-secondary: #5f4934; --ambient-glass: rgba(125, 82, 38, .12); }
+:root[data-theme="light"] .executive-cockpit-home.ambient-theme-phantom-starlight { --ambient-primary: #536f68; --ambient-secondary: #a37b43; --ambient-glass: rgba(72, 107, 99, .11); }
+:root[data-theme="light"] .executive-cockpit-home.ambient-theme-executive-amber { --ambient-primary: #a85f28; --ambient-secondary: #743b1d; --ambient-glass: rgba(161, 83, 34, .12); }
+:root[data-theme="light"] .executive-cockpit-home.ambient-theme-midnight-blue { --ambient-primary: #3f7180; --ambient-secondary: #315a68; --ambient-glass: rgba(52, 103, 118, .12); }
+:root[data-theme="light"] .executive-cockpit-home.ambient-theme-violet-lounge { --ambient-primary: #755e80; --ambient-secondary: #58485f; --ambient-glass: rgba(103, 79, 112, .11); }
+:root[data-theme="light"] .executive-cockpit-home.ambient-theme-classic-walnut { --ambient-primary: #87512e; --ambient-secondary: #5c371f; --ambient-glass: rgba(116, 67, 36, .13); }
+:root[data-theme="light"] .executive-cockpit-home.ambient-theme-silent-black { --ambient-primary: #56635e; --ambient-secondary: #343b38; --ambient-glass: rgba(58, 69, 65, .08); }
+
+:root[data-theme="light"] body[data-page="home"] .cockpit-ambient-rail,
+:root[data-theme="light"] body[data-page="home"] .home-interaction-light-bar::before {
+  opacity: .58;
+  filter: saturate(.72) contrast(1.08);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--ambient-primary) 18%, transparent);
+}
+
+:root[data-theme="light"] body[data-page="home"] .site-header {
+  color: #292821;
+  background: rgba(248, 245, 237, .92);
+}
+
+:root[data-theme="light"] body[data-page="home"] .mini-control-pad {
+  border-color: rgba(103, 65, 34, .25);
+  background: rgba(225, 205, 176, .94);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .72), 0 10px 22px rgba(76, 45, 24, .13);
+}
+
+:root[data-theme="light"] body[data-page="home"] .mini-control-pad button {
+  color: #392d24;
+  border-color: rgba(96, 61, 35, .24);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .64), rgba(95, 58, 31, .07));
+}

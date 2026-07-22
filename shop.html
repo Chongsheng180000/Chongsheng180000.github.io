@@ -39,56 +39,16 @@
         <p data-i18n-zh="这里先做展示、说明和联系购买。自动支付、自动发货暂不开放，交付前先把用途和边界说清楚。" data-i18n-en="This page handles display, explanation, and contact-based requests. There is no automatic payment or delivery; use and boundaries are confirmed first.">这里先做展示、说明和联系购买。自动支付、自动发货暂不开放，交付前先把用途和边界说清楚。</p>
       </div>
       <div class="member-entry-console" aria-label="会员区入口" data-i18n-aria-zh="会员区入口" data-i18n-aria-en="Member Lounge entry">
-        <span class="member-entry-console__status"><i aria-hidden="true"></i><b data-i18n-zh="私享入口待验证" data-i18n-en="Private access locked">私享入口待验证</b></span>
-        <button class="member-access-control" id="member-access-trigger" type="button" aria-haspopup="dialog" aria-controls="member-access-dialog">
+        <span class="member-entry-console__status"><i aria-hidden="true"></i><b data-i18n-zh="独立私享资源舱" data-i18n-en="Independent private lounge">独立私享资源舱</b></span>
+        <a class="member-access-control" href="member.html" aria-label="进入会员资源舱" data-i18n-aria-zh="进入会员资源舱" data-i18n-aria-en="Enter Member Lounge">
           <span class="member-access-control__lamp" aria-hidden="true"></span>
           <span class="member-access-control__copy">
-            <strong data-i18n-zh="会员区" data-i18n-en="Member Lounge">会员区</strong>
-            <small data-i18n-zh="验证会员凭证" data-i18n-en="Verify member access">验证会员凭证</small>
+            <strong data-i18n-zh="会员资源舱" data-i18n-en="Member Lounge">会员资源舱</strong>
+            <small data-i18n-zh="前往独立验证界面" data-i18n-en="Open the private access console">前往独立验证界面</small>
           </span>
           <span class="member-access-control__key" aria-hidden="true">M</span>
-        </button>
+        </a>
       </div>
-    </section>
-
-    <section class="shell member-lounge" id="member-lounge" aria-labelledby="member-lounge-title" hidden>
-      <div class="member-lounge__ambient" aria-hidden="true"></div>
-      <header class="member-lounge__header">
-        <div>
-          <p class="eyebrow" data-i18n-zh="高级会员资源舱" data-i18n-en="Executive Member Lounge">高级会员资源舱</p>
-          <h2 id="member-lounge-title" data-i18n-zh="私享资源，经过验证再显示。" data-i18n-en="Private resources, revealed only after verification.">私享资源，经过验证再显示。</h2>
-          <p data-i18n-zh="商品清单由会员后端实时提供；本页不保存卡密，也不内置隐藏商品。" data-i18n-en="The member backend supplies this catalog live. This page stores neither access codes nor a hidden catalog.">商品清单由会员后端实时提供；本页不保存卡密，也不内置隐藏商品。</p>
-        </div>
-        <button class="member-logout-control" id="member-logout" type="button">
-          <span data-i18n-zh="退出会员区" data-i18n-en="Leave Member Lounge">退出会员区</span>
-          <i aria-hidden="true"></i>
-        </button>
-      </header>
-
-      <div class="member-security-strip" role="status" aria-live="polite">
-        <span><i aria-hidden="true"></i><b data-i18n-zh="会员权限：已验证" data-i18n-en="Member Access: Verified">会员权限：已验证</b></span>
-        <span><i aria-hidden="true"></i><b data-i18n-zh="信号：安全" data-i18n-en="Signal: Secure">信号：安全</b></span>
-        <span><i aria-hidden="true"></i><b data-i18n-zh="设备：已绑定" data-i18n-en="Device: Bound">设备：已绑定</b></span>
-        <span><i aria-hidden="true"></i><b data-i18n-zh="会话：有效" data-i18n-en="Session: Active">会话：有效</b></span>
-      </div>
-
-      <div class="member-console-deck">
-        <div class="member-category-strip" id="member-category-strip" role="toolbar" aria-label="会员商品分类" data-i18n-aria-zh="会员商品分类" data-i18n-aria-en="Member product categories"></div>
-        <div class="member-console-readout" aria-live="polite">
-          <span data-i18n-zh="已验证资源" data-i18n-en="Verified inventory">已验证资源</span>
-          <strong id="member-product-count">0</strong>
-          <i aria-hidden="true"></i>
-          <b id="member-active-category">全部资源</b>
-        </div>
-      </div>
-
-      <div class="member-products" id="member-products" aria-live="polite"></div>
-      <div class="member-detail-console" id="member-detail-console" hidden aria-live="polite"></div>
-
-      <footer class="member-lounge__boundary">
-        <span><i aria-hidden="true"></i><b data-i18n-zh="边界清晰" data-i18n-en="Boundary Clear">边界清晰</b></span>
-        <p data-i18n-zh="会员权限只控制资源清单的访问，不代表自动支付或自动交付。具体用途、授权范围和获取方式仍需单独确认。" data-i18n-en="Member access controls catalog visibility only. Payment, delivery, intended use, and license scope still require separate confirmation.">会员权限只控制资源清单的访问，不代表自动支付或自动交付。具体用途、授权范围和获取方式仍需单独确认。</p>
-      </footer>
     </section>
 
     <section class="shell armrest-console">
@@ -111,44 +71,9 @@
   </main>
 
   <div data-site-footer></div>
-
-  <dialog class="member-access-dialog" id="member-access-dialog" aria-labelledby="member-access-title" aria-describedby="member-access-description">
-    <div class="member-access-dialog__shell">
-      <div class="member-access-dialog__rail" aria-hidden="true"><i></i><i></i><i></i></div>
-      <button class="member-dialog-close" id="member-dialog-close" type="button" aria-label="关闭会员验证" data-i18n-aria-zh="关闭会员验证" data-i18n-aria-en="Close member verification">×</button>
-      <header>
-        <span class="member-dialog-signal"><i aria-hidden="true"></i><b data-i18n-zh="加密验证通道" data-i18n-en="Secure verification channel">加密验证通道</b></span>
-        <p class="eyebrow" data-i18n-zh="会员凭证验证" data-i18n-en="Member Access">会员凭证验证</p>
-        <h2 id="member-access-title" data-i18n-zh="进入私享资源舱" data-i18n-en="Enter the private resource lounge">进入私享资源舱</h2>
-        <p id="member-access-description" data-i18n-zh="会员区为私享资源舱，卡密由站主单独发放。" data-i18n-en="The member lounge is a private resource cabin. Access codes are issued directly by the site owner.">会员区为私享资源舱，卡密由站主单独发放。</p>
-      </header>
-
-      <form id="member-access-form" novalidate>
-        <label class="member-code-field" for="member-code">
-          <span data-i18n-zh="会员卡密" data-i18n-en="Member access code">会员卡密</span>
-          <input id="member-code" type="password" maxlength="200" autocomplete="off" autocapitalize="characters" spellcheck="false" required data-i18n-placeholder-zh="输入会员卡密" data-i18n-placeholder-en="Enter member access code" placeholder="输入会员卡密">
-          <i aria-hidden="true"></i>
-        </label>
-        <div class="member-turnstile-slot" id="member-turnstile-slot" hidden></div>
-        <p class="member-access-status" id="member-access-status" aria-live="polite"></p>
-        <button class="member-verify-control" id="member-verify" type="submit">
-          <span data-member-submit-label data-i18n-zh="验证并进入" data-i18n-en="Verify and enter">验证并进入</span>
-          <i aria-hidden="true"></i>
-        </button>
-      </form>
-
-      <footer>
-        <p data-i18n-zh="没有卡密？请联系站主说明用途。" data-i18n-en="Need access? Contact the site owner and describe the intended use.">没有卡密？请联系站主说明用途。</p>
-        <a href="contact.html?topic=member" data-i18n-zh="联系站主" data-i18n-en="Contact owner">联系站主</a>
-      </footer>
-    </div>
-  </dialog>
-
   <script src="data/posts.js" defer></script>
   <script src="data/products.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/executive-pages.js" defer></script>
-  <script src="assets/js/member-config.js" defer></script>
-  <script src="assets/js/member-lounge.js" defer></script>
 </body>
 </html>

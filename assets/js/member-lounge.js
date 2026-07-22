@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  if (document.body.dataset.page !== 'shop') return;
+  if (document.body.dataset.page !== 'member') return;
 
   const config = window.CHONGSHENG_MEMBER_CONFIG || {};
   const apiBase = String(config.apiBase || '').replace(/\/+$/u, '');
@@ -163,6 +163,7 @@
     state.session = null;
     state.products = [];
     state.activeCategory = 'all';
+    document.body.classList.remove('member-authenticated');
     lounge.hidden = true;
     lounge.removeAttribute('data-ready');
     productMount.replaceChildren();
@@ -232,6 +233,10 @@
   function renderProduct(product, index) {
     const article = document.createElement('article');
     article.className = 'member-product-module';
+    article.style.setProperty('--member-spot-x', '50%');
+    article.style.setProperty('--member-spot-y', '18%');
+    article.style.setProperty('--member-tilt-x', '0deg');
+    article.style.setProperty('--member-tilt-y', '0deg');
     if (product.featured) article.dataset.featured = 'true';
 
     const top = document.createElement('div');
@@ -286,7 +291,35 @@
     boundary.textContent = text('交付与授权范围需单独确认', 'Delivery and license scope require confirmation');
 
     article.append(top, title, subtitle, description, metadata, actions, boundary);
+    bindProductLight(article);
     return article;
+  }
+
+  function bindProductLight(article) {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    let frame = 0;
+    article.addEventListener('pointermove', (event) => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const rect = article.getBoundingClientRect();
+        const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+        const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+        article.style.setProperty('--member-spot-x', `${(x * 100).toFixed(2)}%`);
+        article.style.setProperty('--member-spot-y', `${(y * 100).toFixed(2)}%`);
+        article.style.setProperty('--member-tilt-x', `${((0.5 - y) * 1.1).toFixed(2)}deg`);
+        article.style.setProperty('--member-tilt-y', `${((x - 0.5) * 1.25).toFixed(2)}deg`);
+      });
+    }, { passive: true });
+    article.addEventListener('pointerleave', () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        article.style.setProperty('--member-spot-x', '50%');
+        article.style.setProperty('--member-spot-y', '18%');
+        article.style.setProperty('--member-tilt-x', '0deg');
+        article.style.setProperty('--member-tilt-y', '0deg');
+      });
+    });
   }
 
   function renderProducts() {
@@ -345,6 +378,7 @@
     state.session = session;
     state.products = Array.isArray(products) ? products : [];
     state.activeCategory = 'all';
+    document.body.classList.add('member-authenticated');
     lounge.hidden = false;
     lounge.dataset.ready = 'true';
     trigger.classList.add('is-verified');
@@ -532,6 +566,21 @@
     }
   }
 
+  function initializeLoungeLight() {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = matchMedia('(pointer: fine)').matches;
+    if (reduced || !finePointer) return;
+    lounge.addEventListener('pointermove', (event) => {
+      const rect = lounge.getBoundingClientRect();
+      lounge.style.setProperty('--lounge-light-x', `${((event.clientX - rect.left) / rect.width * 100).toFixed(2)}%`);
+      lounge.style.setProperty('--lounge-light-y', `${((event.clientY - rect.top) / rect.height * 100).toFixed(2)}%`);
+    }, { passive: true });
+    lounge.addEventListener('pointerleave', () => {
+      lounge.style.setProperty('--lounge-light-x', '50%');
+      lounge.style.setProperty('--lounge-light-y', '12%');
+    });
+  }
+
   trigger.addEventListener('click', openDialog);
   closeButton.addEventListener('click', closeDialog);
   form.addEventListener('submit', verifyAccess);
@@ -557,5 +606,6 @@
     }
   });
 
+  initializeLoungeLight();
   initialize();
 })();
